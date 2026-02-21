@@ -6,38 +6,58 @@ public class PlayerInputHandler : MonoBehaviour
     [Header("Inputs")]
     [SerializeField] private InputActionAsset inputActionAsset;
     [SerializeField] private string actionMapName = "Main";
-    [SerializeField] private string movement = "Move";
-    [SerializeField] private string looking = "Look";
+    [SerializeField] private string move = "Move";
+    [SerializeField] private string look = "Look";
+    [SerializeField] private string jump = "Jump";
+    [SerializeField] private string sprint = "Sprint";
 
-    private InputAction movementAction;
-    private InputAction lookingAction;
+    private InputAction moveAction;
+    private InputAction lookAction;
+    private InputAction jumpAction;
+    private InputAction sprintAction;
 
-    public Vector2 MovementInput { get; private set; }
-    public Vector2 LookingInput { get; private set; }
+    public Vector2 MoveInput { get; private set; }
+    public Vector2 LookInput { get; private set; }
+    public bool JumpTrigger { get; private set; }
+    public bool SprintTrigger { get; private set; }
 
     private void Awake()
     {
         InputActionMap mapRefernece = inputActionAsset.FindActionMap(actionMapName);
-        movementAction = mapRefernece.FindAction(movement);
-        lookingAction = mapRefernece.FindAction(looking);
+        moveAction = mapRefernece.FindAction(move);
+        lookAction = mapRefernece.FindAction(look);
+        jumpAction = mapRefernece.FindAction(jump);
+        sprintAction = mapRefernece.FindAction(sprint);
     }
 
     private void SubscribeActions()
     {
-        movementAction.performed += (input) => MovementInput = input.ReadValue<Vector2>();
-        movementAction.canceled += (_) => MovementInput = Vector2.zero;
+        moveAction.performed += (input) => MoveInput = input.ReadValue<Vector2>();
+        moveAction.canceled += (_) => MoveInput = Vector2.zero;
 
-        lookingAction.performed += (input) => LookingInput = input.ReadValue<Vector2>();
-        lookingAction.canceled += (_) => LookingInput = Vector2.zero;
+        lookAction.performed += (input) => LookInput = input.ReadValue<Vector2>();
+        lookAction.canceled += (_) => LookInput = Vector2.zero;
+
+        jumpAction.performed += (_) => JumpTrigger = true;
+        jumpAction.canceled += (_) => JumpTrigger = false;
+
+        sprintAction.performed += (_) => SprintTrigger = true;
+        sprintAction.canceled += (_) => SprintTrigger = false;
     }
 
     private void UnsubscribeActions()
     {
-        movementAction.performed -= (input) => MovementInput = input.ReadValue<Vector2>();
-        movementAction.canceled -= (_) => MovementInput = Vector2.zero;
+        moveAction.performed -= (input) => MoveInput = input.ReadValue<Vector2>();
+        moveAction.canceled -= (_) => MoveInput = Vector2.zero;
 
-        lookingAction.performed -= (input) => LookingInput = input.ReadValue<Vector2>();
-        lookingAction.canceled -= (_) => LookingInput = Vector2.zero;
+        lookAction.performed -= (input) => LookInput = input.ReadValue<Vector2>();
+        lookAction.canceled -= (_) => LookInput = Vector2.zero;
+
+        jumpAction.performed -= (_) => JumpTrigger = true;
+        jumpAction.canceled -= (_) => JumpTrigger = false;
+
+        sprintAction.performed -= (_) => SprintTrigger = true;
+        sprintAction.canceled -= (_) => SprintTrigger = false;
     }
 
     private void OnEnable()

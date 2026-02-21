@@ -386,7 +386,7 @@ Transform:
   m_GameObject: {fileID: 378811967}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.32, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -530,8 +530,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
   inputActionAsset: {fileID: -944628639613478452, guid: 53fb8176cd9df44498a7db6fee724795, type: 3}
   actionMapName: Main
-  movement: Move
-  looking: Look
+  move: Move
+  look: Look
+  jump: Jump
+  sprint: Sprint
 --- !u!4 &628880118
 Transform:
   m_ObjectHideFlags: 0
@@ -724,6 +726,8 @@ MonoBehaviour:
   walkSpeed: 3
   mouseSensitivity: 0.1
   upDownLookRange: 80
+  jumpForce: 5
+  gravityMultiplier: 1
   characterController: {fileID: 1473415201}
   camTarget: {fileID: 933032400}
   playerInputHandler: {fileID: 628880117}
@@ -749,7 +753,7 @@ CharacterController:
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
-  m_SkinWidth: 0.08
+  m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1473415202
@@ -761,7 +765,7 @@ Transform:
   m_GameObject: {fileID: 1473415199}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.33297, y: 1.31, z: -17.42093}
+  m_LocalPosition: {x: -9.33297, y: 1.2, z: -17.42093}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

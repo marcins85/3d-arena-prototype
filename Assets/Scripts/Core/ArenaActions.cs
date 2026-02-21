@@ -109,6 +109,24 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""b855e0e4-3278-4a66-8cf6-12dcf30c91b5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprint"",
+                    ""type"": ""Button"",
+                    ""id"": ""cacc0a9a-b70e-42c3-a8f0-f90f85c09188"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -177,6 +195,28 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eeeb736f-8fcc-4892-8a52-12bdbabea7fc"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b9f784b3-dcca-49de-aef0-251f46c99061"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprint"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +227,8 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         m_Main = asset.FindActionMap("Main", throwIfNotFound: true);
         m_Main_Move = m_Main.FindAction("Move", throwIfNotFound: true);
         m_Main_Look = m_Main.FindAction("Look", throwIfNotFound: true);
+        m_Main_Jump = m_Main.FindAction("Jump", throwIfNotFound: true);
+        m_Main_Sprint = m_Main.FindAction("Sprint", throwIfNotFound: true);
     }
 
     ~@ArenaActions()
@@ -269,6 +311,8 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
     private List<IMainActions> m_MainActionsCallbackInterfaces = new List<IMainActions>();
     private readonly InputAction m_Main_Move;
     private readonly InputAction m_Main_Look;
+    private readonly InputAction m_Main_Jump;
+    private readonly InputAction m_Main_Sprint;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -288,6 +332,14 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Main/Look".
         /// </summary>
         public InputAction @Look => m_Wrapper.m_Main_Look;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Jump".
+        /// </summary>
+        public InputAction @Jump => m_Wrapper.m_Main_Jump;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Sprint".
+        /// </summary>
+        public InputAction @Sprint => m_Wrapper.m_Main_Sprint;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -320,6 +372,12 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+            @Sprint.started += instance.OnSprint;
+            @Sprint.performed += instance.OnSprint;
+            @Sprint.canceled += instance.OnSprint;
         }
 
         /// <summary>
@@ -337,6 +395,12 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+            @Sprint.started -= instance.OnSprint;
+            @Sprint.performed -= instance.OnSprint;
+            @Sprint.canceled -= instance.OnSprint;
         }
 
         /// <summary>
@@ -391,5 +455,19 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Jump" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnJump(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Sprint" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSprint(InputAction.CallbackContext context);
     }
 }
