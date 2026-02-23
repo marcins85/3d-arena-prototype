@@ -508,7 +508,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 628880118}
-  - component: {fileID: 628880117}
   - component: {fileID: 628880119}
   m_Layer: 0
   m_Name: PlayerInputHandler
@@ -517,24 +516,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &628880117
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628880116}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecf1f55921e153641a7bf458c9a0e53b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
-  inputActionAsset: {fileID: -944628639613478452, guid: 53fb8176cd9df44498a7db6fee724795, type: 3}
-  actionMapName: Main
-  move: Move
-  look: Look
-  jump: Jump
-  sprint: Sprint
 --- !u!4 &628880118
 Transform:
   m_ObjectHideFlags: 0
@@ -721,7 +702,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1473415202}
   - component: {fileID: 1473415201}
-  - component: {fileID: 1473415200}
   - component: {fileID: 1473415203}
   m_Layer: 0
   m_Name: Player
@@ -730,26 +710,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1473415200
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1473415199}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: edffacc14484c644e9bcd50675f16c3a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  walkSpeed: 3
-  mouseSensitivity: 0.1
-  upDownLookRange: 80
-  jumpForce: 5
-  gravityMultiplier: 1
-  characterController: {fileID: 1473415201}
-  camTarget: {fileID: 933032400}
-  playerInputHandler: {fileID: 628880117}
 --- !u!143 &1473415201
 CharacterController:
   m_ObjectHideFlags: 0
