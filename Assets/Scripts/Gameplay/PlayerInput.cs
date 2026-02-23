@@ -31,33 +31,70 @@ public class PlayerInput : MonoBehaviour
 
     private void SubscribeActions()
     {
-        _moveAction.performed += input => MoveInput = input.ReadValue<Vector2>();
-        _moveAction.canceled += _ => MoveInput = Vector2.zero;
+        if (_moveAction != null)
+        {
+            _moveAction.performed += OnMovePerformed;
+            _moveAction.canceled += OnMoveCanceled;
+        }
 
-        _lookAction.performed += input => LookInput = input.ReadValue<Vector2>();
-        _lookAction.canceled += _ => LookInput = Vector2.zero;
+        if (_lookAction != null)
+        {
+            _lookAction.performed += OnLookPerformed;
+            _lookAction.canceled += OnLookCanceled;
+        }
 
-        _jumpAction.performed += _ => JumpTrigger = true;
-        _jumpAction.canceled += _ => JumpTrigger = false;
+        if (_jumpAction != null)
+        {
+            _jumpAction.performed += OnJumpPerformed;
+            _jumpAction.canceled += OnJumpCanceled;
+        }
 
-        _sprintAction.performed += _ => SprintTrigger = true;
-        _sprintAction.canceled += _ => SprintTrigger = false;
+        if (_sprintAction != null)
+        {
+            _sprintAction.performed += OnSprintPerformed;
+            _sprintAction.canceled += OnSprintCanceled;
+        }
     }
 
     private void UnsubscribeActions()
     {
-        _moveAction.performed -= input => MoveInput = input.ReadValue<Vector2>();
-        _moveAction.canceled -= _ => MoveInput = Vector2.zero;
+        if (_moveAction != null)
+        {
+            _moveAction.performed -= OnMovePerformed;
+            _moveAction.canceled -= OnMoveCanceled;
+        }
 
-        _lookAction.performed -= input => LookInput = input.ReadValue<Vector2>();
-        _lookAction.canceled -= _ => LookInput = Vector2.zero;
+        if (_lookAction != null)
+        {
+            _lookAction.performed -= OnLookPerformed;
+            _lookAction.canceled -= OnLookCanceled;
+        }
 
-        _jumpAction.performed -= _ => JumpTrigger = true;
-        _jumpAction.canceled -= _ => JumpTrigger = false;
+        if (_jumpAction != null)
+        {
+            _jumpAction.performed -= OnJumpPerformed;
+            _jumpAction.canceled -= OnJumpCanceled;
+        }
 
-        _sprintAction.performed -= _ => SprintTrigger = true;
-        _sprintAction.canceled -= _ => SprintTrigger = false;
+        if (_sprintAction != null)
+        {
+            _sprintAction.performed -= OnSprintPerformed;
+            _sprintAction.canceled -= OnSprintCanceled;
+        }
     }
+
+    // Input callbacks - use concrete methods so unsubscription works correctly
+    private void OnMovePerformed(InputAction.CallbackContext ctx) => MoveInput = ctx.ReadValue<Vector2>();
+    private void OnMoveCanceled(InputAction.CallbackContext _) => MoveInput = Vector2.zero;
+
+    private void OnLookPerformed(InputAction.CallbackContext ctx) => LookInput = ctx.ReadValue<Vector2>();
+    private void OnLookCanceled(InputAction.CallbackContext _) => LookInput = Vector2.zero;
+
+    private void OnJumpPerformed(InputAction.CallbackContext _) => JumpTrigger = true;
+    private void OnJumpCanceled(InputAction.CallbackContext _) => JumpTrigger = false;
+
+    private void OnSprintPerformed(InputAction.CallbackContext _) => SprintTrigger = true;
+    private void OnSprintCanceled(InputAction.CallbackContext _) => SprintTrigger = false;
 
     private void OnEnable()
     {
@@ -67,7 +104,7 @@ public class PlayerInput : MonoBehaviour
 
     private void OnDisable()
     {
-        UnsubscribeActions();
         _asset.FindActionMap(_actionMap).Disable();
+        UnsubscribeActions();
     }
 }

@@ -29,7 +29,7 @@ public class PlayerMovement
 
     public void HandleMovement()
     {
-        if (_characterController == null && _input == null) return;
+        if (_characterController == null || _input == null) return;
             
         if (_characterController.isGrounded)
         {

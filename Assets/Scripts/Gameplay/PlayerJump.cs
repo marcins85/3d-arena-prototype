@@ -19,7 +19,7 @@ public class PlayerJump
 
     public void HandleJump()
     {
-        if (_characterController == null && _movement == null) return;
+        if (_characterController == null || _movement == null) return;
         if (_characterController.isGrounded)
         {
             if (_input.JumpTrigger && _canJump)
