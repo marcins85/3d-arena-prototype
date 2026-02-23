@@ -8,14 +8,17 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private string _move = "Move";
     [SerializeField] private string _look = "Look";
     [SerializeField] private string _jump = "Jump";
+    [SerializeField] private string _sprint = "Sprint";
 
     private InputAction _moveAction;
     private InputAction _lookAction;
     private InputAction _jumpAction;
+    private InputAction _sprintAction;
 
     public Vector2 MoveInput { get; private set; }
     public Vector2 LookInput { get; private set; }
     public bool JumpTrigger {  get; private set; }
+    public bool SprintTrigger { get; private set; }
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class PlayerInput : MonoBehaviour
         _moveAction = map.FindAction(_move);
         _lookAction = map.FindAction(_look);
         _jumpAction = map.FindAction(_jump);
+        _sprintAction = map.FindAction(_sprint);
     }
 
     private void SubscribeActions()
@@ -35,6 +39,9 @@ public class PlayerInput : MonoBehaviour
 
         _jumpAction.performed += _ => JumpTrigger = true;
         _jumpAction.canceled += _ => JumpTrigger = false;
+
+        _sprintAction.performed += _ => SprintTrigger = true;
+        _sprintAction.canceled += _ => SprintTrigger = false;
     }
 
     private void UnsubscribeActions()
@@ -47,6 +54,9 @@ public class PlayerInput : MonoBehaviour
 
         _jumpAction.performed -= _ => JumpTrigger = true;
         _jumpAction.canceled -= _ => JumpTrigger = false;
+
+        _sprintAction.performed -= _ => SprintTrigger = true;
+        _sprintAction.canceled -= _ => SprintTrigger = false;
     }
 
     private void OnEnable()

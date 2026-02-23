@@ -33,10 +33,10 @@ public class PlayerRotation
 
     public void HandleRotation()
     {
-        float mouseXRotation = _input.LookInput.x * _mouseSensitivity;
-        float mouseYRotation = _input.LookInput.y * _mouseSensitivity;
+        float l_mouseXRotation = _input.LookInput.x * _mouseSensitivity;
+        float l_mouseYRotation = _input.LookInput.y * _mouseSensitivity;
 
-        HorizontalRotation(mouseXRotation);
-        VerticalRotation(mouseYRotation);
+        HorizontalRotation(l_mouseXRotation);
+        VerticalRotation(l_mouseYRotation);
     }
 }

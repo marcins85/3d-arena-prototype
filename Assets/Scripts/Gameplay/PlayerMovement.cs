@@ -4,13 +4,14 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement
 {
-    [SerializeField] private float moveSpeed = 5f;
     private PlayerInput _input;
     private CharacterController _characterController;
     private Vector3 _worldDirection;
     private Vector3 _currentMovement;
     private Vector3 _airMovement;
     private Transform _transform;
+    private float _walkSpeed = 5f;
+    private float _sprintMultiplier = 1.5f;
     
     public PlayerMovement(PlayerInput input, CharacterController characterController, Transform transform)
     {
@@ -21,9 +22,9 @@ public class PlayerMovement
 
     private Vector3 CalculateWorldDirection()
     {
-        Vector3 inputDirection = new Vector3(_input.MoveInput.x, 0f, _input.MoveInput.y);
-        Vector3 worldDirection = _transform.TransformDirection(inputDirection);
-        return worldDirection.normalized;
+        Vector3 l_inputDirection = new Vector3(_input.MoveInput.x, 0f, _input.MoveInput.y);
+        Vector3 l_worldDirection = _transform.TransformDirection(l_inputDirection);
+        return l_worldDirection.normalized;
     }
 
     public void HandleMovement()
@@ -32,9 +33,11 @@ public class PlayerMovement
             
         if (_characterController.isGrounded)
         {
-            Vector3 worldDirection = CalculateWorldDirection();
-            _currentMovement.x = worldDirection.x * moveSpeed;
-            _currentMovement.z = worldDirection.z * moveSpeed;
+            float l_moveSpeed = _walkSpeed * (_input.SprintTrigger ? _sprintMultiplier : 1);
+
+            Vector3 l_worldDirection = CalculateWorldDirection();
+            _currentMovement.x = l_worldDirection.x * l_moveSpeed;
+            _currentMovement.z = l_worldDirection.z * l_moveSpeed;
             _airMovement = new Vector3(_currentMovement.x, 0f, _currentMovement.z);
         }
         else
