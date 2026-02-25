@@ -3,18 +3,22 @@ using UnityEngine;
 public class PlayerJump
 {
     private CharacterController _characterController;
-    private PlayerInput _input;
     private PlayerMovement _movement;
     private float _jumpForce = 5f;
     private bool _canJump = true;
     private float _verticalVelocity = 0f;
     private float _gravityMultiplier = 1f;
+    private bool _jumpTrigger;
 
-    public PlayerJump(PlayerInput input, CharacterController characterController, PlayerMovement movement)
+    public PlayerJump(CharacterController characterController, PlayerMovement movement)
     {
         _characterController = characterController;
-        _input = input;
         _movement = movement;
+    }
+
+    public void SetJumpTrigger(bool trigger)
+    {
+        _jumpTrigger = trigger;
     }
 
     public void HandleJump()
@@ -22,13 +26,13 @@ public class PlayerJump
         if (_characterController == null || _movement == null) return;
         if (_characterController.isGrounded)
         {
-            if (_input.JumpTrigger && _canJump)
+            if (_jumpTrigger && _canJump)
             {
                 _verticalVelocity = _jumpForce;
                 _canJump = false;
             }
 
-            if (!_input.JumpTrigger)
+            if (!_jumpTrigger)
             {
                 _canJump = true;
             }
