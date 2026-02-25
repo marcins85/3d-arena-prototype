@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerController2 : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private InputActionAsset _asset;
@@ -19,14 +19,17 @@ public class PlayerController2 : MonoBehaviour
 
         _movement = new PlayerMovement(_characterController, transform);
         _rotation = new PlayerRotation(_camTarget, transform);
-        _jump = new PlayerJump(_characterController, _movement);
+        _jump = new PlayerJump();
     }
 
     private void Update()
     {
-        _movement.HandleMovement();
+        bool grounded = _characterController.isGrounded;
+        _jump.HandleJump(grounded);
+        float y = _jump.GetVerticalVelocity();
+        _movement.HandleMovement(y);
+        _jump.SetVerticalVelocity(_movement.CurrentVerticalVelocity);
         _rotation.HandleRotation();
-        _jump.HandleJump();
     }
 
     private void OnEnable()

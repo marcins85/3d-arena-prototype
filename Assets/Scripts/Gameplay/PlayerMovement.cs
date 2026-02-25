@@ -11,8 +11,10 @@ public class PlayerMovement
     private Transform _transform;
     private float _walkSpeed = 5f;
     private float _sprintMultiplier = 1.5f;
+    private float _gravityMultiplier = 1f;
     private Vector2 _moveInput;
     private bool _sprintTrigger;
+    public float CurrentVerticalVelocity => _currentMovement.y;
 
     public PlayerMovement(CharacterController characterController, Transform transform)
     {
@@ -26,10 +28,10 @@ public class PlayerMovement
         return l_worldDirection.normalized;
     }
 
+
     public void SetMoveInput(Vector2 input)
     {
         _moveInput = input;
-        Debug.Log(_moveInput);
     }
 
     public void SetSprintTrigger(bool trigger)
@@ -37,7 +39,7 @@ public class PlayerMovement
         _sprintTrigger = trigger;
     }
 
-    public void HandleMovement()
+    public void HandleMovement(float verticalVelocity)
     {
         if (_characterController == null) return;
 
@@ -56,24 +58,19 @@ public class PlayerMovement
             _currentMovement.z = _airMovement.z;
         }
 
+        if (_characterController.isGrounded)
+        {
+            if (verticalVelocity < 0f)
+            {
+                verticalVelocity = -2f;
+            }
+        }
+        else
+        {
+            verticalVelocity += Physics.gravity.y * _gravityMultiplier * Time.deltaTime;
+        }
+
+        _currentMovement.y = verticalVelocity;
         _characterController.Move(_currentMovement * Time.deltaTime);
-    }
-
-    public Vector3 GetAirMovement()
-    {
-        return _airMovement;
-    }
-    public void SetAirMovement(Vector3 value)
-    {
-        _airMovement = value;
-    }
-
-    public Vector3 GetCurrentMovement()
-    {
-        return _currentMovement;
-    }
-    public void SetCurrentMovement(Vector3 value)
-    {
-        _currentMovement = value;
     }
 }
