@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerInput
+public class PlayerInput : IPlayerInput
 {
     private readonly string _mapName = "Main";
     private readonly string _moveName = "Move";

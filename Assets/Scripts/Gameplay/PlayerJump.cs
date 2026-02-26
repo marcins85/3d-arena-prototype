@@ -1,14 +1,15 @@
 using UnityEngine;
 
-public class PlayerJump
+public class PlayerJump : IJump
 {
-    private float _jumpForce = 5f;
+    private PlayerConfigSO _config;
     private bool _canJump = true;
     private float _verticalVelocity = 0f;
     private bool _jumpTrigger;
 
-    public PlayerJump()
+    public PlayerJump(PlayerConfigSO confg)
     {
+        _config = confg;
     }
 
     public float GetVerticalVelocity()
@@ -32,7 +33,7 @@ public class PlayerJump
         {
             if (_jumpTrigger && _canJump)
             {
-                _verticalVelocity = _jumpForce;
+                _verticalVelocity = _config.jumpForce;
                 _canJump = false;
             }
 

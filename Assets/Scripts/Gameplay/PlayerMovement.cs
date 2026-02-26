@@ -2,24 +2,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class PlayerMovement
+public class PlayerMovement : IMovement
 {
+    private PlayerConfigSO _config;
     private CharacterController _characterController;
     private Vector3 _worldDirection;
     private Vector3 _currentMovement;
     private Vector3 _airMovement;
     private Transform _transform;
-    private float _walkSpeed = 5f;
-    private float _sprintMultiplier = 1.5f;
-    private float _gravityMultiplier = 1f;
     private Vector2 _moveInput;
     private bool _sprintTrigger;
     public float CurrentVerticalVelocity => _currentMovement.y;
 
-    public PlayerMovement(CharacterController characterController, Transform transform)
+    public PlayerMovement(CharacterController characterController, Transform transform, PlayerConfigSO config)
     {
         _characterController = characterController;
         _transform = transform;
+        _config = config;
     }
     private Vector3 CalculateWorldDirection()
     {
@@ -45,7 +44,7 @@ public class PlayerMovement
 
         if (_characterController.isGrounded)
         {
-            float l_moveSpeed = _walkSpeed * (_sprintTrigger ? _sprintMultiplier : 1);
+            float l_moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
 
             Vector3 l_worldDirection = CalculateWorldDirection();
             _currentMovement.x = l_worldDirection.x * l_moveSpeed;
@@ -67,7 +66,7 @@ public class PlayerMovement
         }
         else
         {
-            verticalVelocity += Physics.gravity.y * _gravityMultiplier * Time.deltaTime;
+            verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
         }
 
         _currentMovement.y = verticalVelocity;

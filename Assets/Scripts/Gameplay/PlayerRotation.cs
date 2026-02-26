@@ -1,18 +1,18 @@
 using UnityEngine;
 
-public class PlayerRotation
+public class PlayerRotation : IRotation
 {
+    private PlayerConfigSO _config;
     private Transform _transform;
     private Transform _camTarget;
     private float _verticalRotation;
-    private float _upDownLimit = 80f;
-    private float _mouseSensitivity = 0.1f;
     private Vector2 _lookInput;
 
-    public PlayerRotation(Transform camTarget, Transform transform)
+    public PlayerRotation(Transform camTarget, Transform transform, PlayerConfigSO config)
     {
         _camTarget = camTarget;
         _transform = transform;
+        _config = config;
     }
 
     public void SetLookInput(Vector2 input)
@@ -30,15 +30,15 @@ public class PlayerRotation
 
     private void VerticalRotation(float amount)
     {
-        _verticalRotation = Mathf.Clamp(_verticalRotation - amount, -_upDownLimit, _upDownLimit);
+        _verticalRotation = Mathf.Clamp(_verticalRotation - amount, -_config.upDownLimit, _config.upDownLimit);
         if (_camTarget != null)
             _camTarget.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 
     public void HandleRotation()
     {
-        float l_mouseXRotation = _lookInput.x * _mouseSensitivity;
-        float l_mouseYRotation = _lookInput.y * _mouseSensitivity;
+        float l_mouseYRotation = _lookInput.y * _config.mouseSensitivity;
+        float l_mouseXRotation = _lookInput.x * _config.mouseSensitivity;
 
         HorizontalRotation(l_mouseXRotation);
         VerticalRotation(l_mouseYRotation);

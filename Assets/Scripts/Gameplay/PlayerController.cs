@@ -3,13 +3,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] private PlayerConfigSO _config;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private InputActionAsset _asset;
     [SerializeField] private Transform _camTarget;
-    private PlayerInput _input;
-    private PlayerMovement _movement;
-    private PlayerRotation _rotation;
-    private PlayerJump _jump;
+    [SerializeField] private Transform _rotator;
+    private IPlayerInput _input;
+    private IMovement _movement;
+    private IRotation _rotation;
+    private IJump _jump;
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -17,9 +19,9 @@ public class PlayerController : MonoBehaviour
 
         _input = new PlayerInput(_asset);
 
-        _movement = new PlayerMovement(_characterController, transform);
-        _rotation = new PlayerRotation(_camTarget, transform);
-        _jump = new PlayerJump();
+        _movement = new PlayerMovement(_characterController, transform, _config);
+        _rotation = new PlayerRotation(_camTarget, transform, _config);
+        _jump = new PlayerJump(_config);
     }
 
     private void Update()
