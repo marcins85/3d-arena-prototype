@@ -22,10 +22,7 @@ public class PlayerRotation : IRotation
 
     private void HorizontalRotation(float amount)
     {
-        if (_transform != null)
-        {
-            _transform.Rotate(0f, amount, 0f);
-        }
+        _transform.Rotate(0f, amount, 0f);
     }
 
     private void VerticalRotation(float amount)
