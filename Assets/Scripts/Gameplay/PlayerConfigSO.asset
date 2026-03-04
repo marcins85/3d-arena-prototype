@@ -17,4 +17,4 @@ MonoBehaviour:
   jumpForce: 5
   gravityMultiplier: 1
   mouseSensitivity: 0.1
-  upDownLimit: 80
+  upDownLimit: 20

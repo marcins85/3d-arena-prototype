@@ -4,90 +4,90 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : IPlayerInput
 {
-    private readonly string _mapName = "Main";
-    private readonly string _moveName = "Move";
-    private readonly string _lookName = "Look";
-    private readonly string _sprintName = "Sprint";
-    private readonly string _jumpName = "Jump";
+    private readonly string m_mapName = "Main";
+    private readonly string m_moveName = "Move";
+    private readonly string m_lookName = "Look";
+    private readonly string m_sprintName = "Sprint";
+    private readonly string m_jumpName = "Jump";
 
-    private readonly InputAction _moveAction;
-    private readonly InputAction _lookAction;
-    private readonly InputAction _sprintAction;
-    private readonly InputAction _jumpAction;
+    private readonly InputAction m_moveAction;
+    private readonly InputAction m_lookAction;
+    private readonly InputAction m_sprintAction;
+    private readonly InputAction m_jumpAction;
 
     public event Action<Vector2> OnMove;
     public event Action<Vector2> OnLook;
     public event Action<bool> OnSprint;
     public event Action<bool> OnJump;
 
-    public PlayerInput(InputActionAsset asset)
+    public PlayerInput(InputActionAsset p_asset)
     {
-        var map = asset.FindActionMap(_mapName);
-        _moveAction = map.FindAction(_moveName);
-        _lookAction = map.FindAction(_lookName);
-        _sprintAction = map.FindAction(_sprintName);
-        _jumpAction = map.FindAction(_jumpName);
+        var l_map = p_asset.FindActionMap(m_mapName);
+        m_moveAction = l_map.FindAction(m_moveName);
+        m_lookAction = l_map.FindAction(m_lookName);
+        m_sprintAction = l_map.FindAction(m_sprintName);
+        m_jumpAction = l_map.FindAction(m_jumpName);
 
-        _moveAction.performed += MovePerformed;
-        _moveAction.canceled += MoveCanceled;
+        m_moveAction.performed += MovePerformed;
+        m_moveAction.canceled += MoveCanceled;
 
-        _lookAction.performed += LookPerformed;
-        _lookAction.canceled += LookCanceled;
+        m_lookAction.performed += LookPerformed;
+        m_lookAction.canceled += LookCanceled;
 
-        _sprintAction.performed += SprintPerformed;
-        _sprintAction.canceled += SprintCanceled;
+        m_sprintAction.performed += SprintPerformed;
+        m_sprintAction.canceled += SprintCanceled;
 
-        _jumpAction.performed += JumpPerformed;
-        _jumpAction.canceled += JumpCanceled;
+        m_jumpAction.performed += JumpPerformed;
+        m_jumpAction.canceled += JumpCanceled;
     }
 
     public void Enable()
     {
-        _moveAction.Enable();
-        _lookAction.Enable();
-        _sprintAction.Enable();
-        _jumpAction.Enable();
+        m_moveAction.Enable();
+        m_lookAction.Enable();
+        m_sprintAction.Enable();
+        m_jumpAction.Enable();
     }
     public void Disable()
     {
-        _moveAction.Disable();
-        _lookAction.Disable();
-        _sprintAction.Disable();
-        _jumpAction.Disable();
+        m_moveAction.Disable();
+        m_lookAction.Disable();
+        m_sprintAction.Disable();
+        m_jumpAction.Disable();
     }
 
-    private void MovePerformed(InputAction.CallbackContext ctx)
+    private void MovePerformed(InputAction.CallbackContext p_ctx)
     {
-        OnMove?.Invoke(ctx.ReadValue<Vector2>());
+        OnMove?.Invoke(p_ctx.ReadValue<Vector2>());
     }
-    private void MoveCanceled(InputAction.CallbackContext ctx)
+    private void MoveCanceled(InputAction.CallbackContext p_ctx)
     {
         OnMove?.Invoke(Vector2.zero);
     }
 
-    private void LookPerformed(InputAction.CallbackContext ctx)
+    private void LookPerformed(InputAction.CallbackContext p_ctx)
     {
-        OnLook?.Invoke(ctx.ReadValue<Vector2>());
+        OnLook?.Invoke(p_ctx.ReadValue<Vector2>());
     }
-    private void LookCanceled(InputAction.CallbackContext ctx)
+    private void LookCanceled(InputAction.CallbackContext p_ctx)
     {
         OnLook?.Invoke(Vector2.zero);
     }
 
-    private void SprintPerformed(InputAction.CallbackContext ctx)
+    private void SprintPerformed(InputAction.CallbackContext p_ctx)
     {
         OnSprint?.Invoke(true);
     }
-    private void SprintCanceled(InputAction.CallbackContext ctx)
+    private void SprintCanceled(InputAction.CallbackContext p_ctx)
     {
         OnSprint?.Invoke(false);
     }
 
-    private void JumpPerformed(InputAction.CallbackContext ctx)
+    private void JumpPerformed(InputAction.CallbackContext p_ctx)
     {
         OnJump?.Invoke(true);
     }
-    private void JumpCanceled(InputAction.CallbackContext ctx)
+    private void JumpCanceled(InputAction.CallbackContext p_ctx)
     {
         OnJump?.Invoke(false);
     }

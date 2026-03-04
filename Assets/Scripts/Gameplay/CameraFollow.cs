@@ -2,15 +2,15 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    [SerializeField] private Transform _camTarget;
-    [SerializeField] private float _pLerp = .02f;
-    [SerializeField] private float _rLerp = .01f;
+    [SerializeField] private Transform m_camTarget;
+    [SerializeField] private float m_pLerp = .02f;
+    [SerializeField] private float m_rLerp = .01f;
 
     private void LateUpdate()
     {
-        if (_camTarget == null) return;
+        if (m_camTarget == null) return;
 
-        transform.position = Vector3.Lerp(transform.position, _camTarget.position, _pLerp);
-        transform.rotation = Quaternion.Slerp(transform.rotation, _camTarget.rotation, _rLerp);
+        transform.position = Vector3.Lerp(transform.position, m_camTarget.position, m_pLerp);
+        transform.rotation = Quaternion.Slerp(transform.rotation, m_camTarget.rotation, m_rLerp);
     }
 }
