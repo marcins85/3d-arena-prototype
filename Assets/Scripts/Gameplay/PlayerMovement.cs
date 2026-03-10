@@ -4,124 +4,124 @@ using UnityEngine.UIElements;
 
 public class PlayerMovement : IMovement
 {
-    private PlayerConfigSO m_config;
-    private CharacterController m_characterController;
-    private Vector3 m_worldDirection;
-    private Vector3 m_currentMovement;
-    private Vector3 m_airMovement;
-    private Transform m_transform;
-    private Transform m_camRoot;
-    private Vector2 m_moveInput;
-    private LayerMask m_groundMask;
-    private bool m_sprintTrigger;
+    private PlayerConfigSO _config;
+    private CharacterController _characterController;
+    private Vector3 _worldDirection;
+    private Vector3 _currentMovement;
+    private Vector3 _airMovement;
+    private Transform _transform;
+    private Transform _camRoot;
+    private Vector2 _moveInput;
+    private LayerMask _groundMask;
+    private bool _sprintTrigger;
 
-    public float CurrentVerticalVelocity => m_currentMovement.y;
+    public float CurrentVerticalVelocity => _currentMovement.y;
     public bool CanMove { get; set; } = true;
 
-    public PlayerMovement(CharacterController p_characterController, Transform p_transform, Transform p_camRoot, LayerMask p_groundMask, PlayerConfigSO p_config)
+    public PlayerMovement(CharacterController characterController, Transform transform, Transform camRoot, LayerMask groundMask, PlayerConfigSO config)
     {
-        m_characterController = p_characterController;
-        m_transform = p_transform;
-        m_camRoot = p_camRoot;
-        m_groundMask = p_groundMask;
-        m_config = p_config;
+        _characterController = characterController;
+        _transform = transform;
+        _camRoot = camRoot;
+        _groundMask = groundMask;
+        _config = config;
     }
 
     // WSAD podąża za playerem
     //private Vector3 CalculateWorldDirection()
     //{
-    //    Vector3 l_inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y);
-    //    Vector3 l_worldDirection = _transform.TransformDirection(l_inputDirection);
-    //    return l_worldDirection.normalized;
+    //    Vector3 inputDirection = new Vector3(_moveInput.x, 0f, _moveInput.y);
+    //    Vector3 worldDirection = _transform.TransformDirection(inputDirection);
+    //    return worldDirection.normalized;
     //}
 
     // WSAD podąża za kamerą
     private Vector3 CalculateWorldDirection()
     {
-        Vector3 l_input = new Vector3(m_moveInput.x, 0f, m_moveInput.y);
+        Vector3 input = new Vector3(_moveInput.x, 0f, _moveInput.y);
 
-        Vector3 l_camForward = m_camRoot.forward;
-        l_camForward.y = 0;
-        l_camForward.Normalize();
+        Vector3 camForward = _camRoot.forward;
+        camForward.y = 0;
+        camForward.Normalize();
 
-        Vector3 l_camRight = m_camRoot.right;
-        l_camRight.y = 0;
-        l_camRight.Normalize();
+        Vector3 camRight = _camRoot.right;
+        camRight.y = 0;
+        camRight.Normalize();
 
-        Vector3 l_worldDir = l_camForward * l_input.z + l_camRight * l_input.x;
-        return l_worldDir.normalized;
+        Vector3 worldDir = camForward * input.z + camRight * input.x;
+        return worldDir.normalized;
     }
 
     private bool IsGroundedRaycast()
     {
-        Vector3 l_origin = m_characterController.bounds.center;
-        l_origin.y = m_characterController.bounds.min.y + 0.05f;
+        Vector3 origin = _characterController.bounds.center;
+        origin.y = _characterController.bounds.min.y + 0.05f;
 
         return Physics.Raycast(
-            l_origin,
+            origin,
             Vector3.down,
             0.3f,
-            m_groundMask
+            _groundMask
         );
     }
 
-    public void SetMoveInput(Vector2 p_input)
+    public void SetMoveInput(Vector2 input)
     {
-        m_moveInput = p_input;
+        _moveInput = input;
     }
 
-    public void SetSprintTrigger(bool p_trigger)
+    public void SetSprintTrigger(bool trigger)
     {
-        m_sprintTrigger = p_trigger;
+        _sprintTrigger = trigger;
     }
 
-    public void HandleMovement(float p_verticalVelocity)
+    public void HandleMovement(float verticalVelocity)
     {
-        if (!m_characterController) return;
+        if (!_characterController) return;
 
         if (!CanMove)
         {
-            m_currentMovement.x = 0;
-            m_currentMovement.z = 0;
+            _currentMovement.x = 0;
+            _currentMovement.z = 0;
 
-            p_verticalVelocity += Physics.gravity.y * m_config.gravityMultiplier * Time.deltaTime;
-            if (p_verticalVelocity < 0f)
-                p_verticalVelocity = -2f;
+            verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
+            if (verticalVelocity < 0f)
+                verticalVelocity = -2f;
 
-            m_currentMovement.y = p_verticalVelocity;
-            m_characterController.Move(m_currentMovement * Time.deltaTime);
+            _currentMovement.y = verticalVelocity;
+            _characterController.Move(_currentMovement * Time.deltaTime);
             return;
         }
 
 
         if (IsGroundedRaycast())
         {
-            float l_moveSpeed = m_config.walkSpeed * (m_sprintTrigger ? m_config.sprintMultiplier : 1);
+            float moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
 
-            Vector3 l_worldDirection = CalculateWorldDirection();
-            m_currentMovement.x = l_worldDirection.x * l_moveSpeed;
-            m_currentMovement.z = l_worldDirection.z * l_moveSpeed;
-            m_airMovement = new Vector3(m_currentMovement.x, 0f, m_currentMovement.z);
+            Vector3 worldDirection = CalculateWorldDirection();
+            _currentMovement.x = worldDirection.x * moveSpeed;
+            _currentMovement.z = worldDirection.z * moveSpeed;
+            _airMovement = new Vector3(_currentMovement.x, 0f, _currentMovement.z);
         }
         else
         {
-            m_currentMovement.x = m_airMovement.x;
-            m_currentMovement.z = m_airMovement.z;
+            _currentMovement.x = _airMovement.x;
+            _currentMovement.z = _airMovement.z;
         }
 
         if (IsGroundedRaycast())
         {
-            if (p_verticalVelocity < 0f)
+            if (verticalVelocity < 0f)
             {
-                p_verticalVelocity = -2f;
+                verticalVelocity = -2f;
             }
         }
         else
         {
-            p_verticalVelocity += Physics.gravity.y * m_config.gravityMultiplier * Time.deltaTime;
+            verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
         }
 
-        m_currentMovement.y = p_verticalVelocity;
-        m_characterController.Move(m_currentMovement * Time.deltaTime);
+        _currentMovement.y = verticalVelocity;
+        _characterController.Move(_currentMovement * Time.deltaTime);
     }
 }

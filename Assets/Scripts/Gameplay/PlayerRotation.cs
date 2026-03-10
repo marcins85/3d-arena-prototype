@@ -2,88 +2,88 @@ using UnityEngine;
 
 public interface ITurnHandler
 {
-    void OnTurnFinished(bool p_right);
+    void OnTurnFinished(bool right);
 }
 
 public class PlayerRotation : IRotation, ITurnHandler
 {
-    private PlayerConfigSO m_config;
+    private PlayerConfigSO _config;
 
-    private Transform m_player;
-    private Transform m_camRoot;
-    private Transform m_camPitch;
+    private Transform _player;
+    private Transform _camRoot;
+    private Transform _camPitch;
 
-    private Animator m_animator;
-    private IMovement m_movement;
+    private Animator _animator;
+    private IMovement _movement;
 
-    private float m_verticalRotation;
-    private Vector2 m_lookInput;
+    private float _verticalRotation;
+    private Vector2 _lookInput;
 
-    private const float ROTATE_SPEED = 120f;
-    private const float MOVE_TURN_THRESHOLD = 45f;
-    private bool m_wantsToMoveForward;
-    private bool m_isMoving;
+    private const float RotateSpeed = 120f;
+    private const float MoveTurnTreshold = 45f;
+    private bool _wantsToMoveForward;
+    private bool _isMoving;
 
     public bool IsTurning { get; private set; }
 
-    public PlayerRotation(Transform p_camRoot, Transform p_camPitch, Transform p_player, Animator p_animator, IMovement p_movement, PlayerConfigSO p_config)
+    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, Animator animator, IMovement movement, PlayerConfigSO config)
     {
-        m_camRoot = p_camRoot;
-        m_camPitch = p_camPitch;
-        m_player = p_player;
-        m_animator = p_animator;
-        m_movement = p_movement;
-        m_config = p_config;
+        _camRoot = camRoot;
+        _camPitch = camPitch;
+        _player = player;
+        _animator = animator;
+        _movement = movement;
+        _config = config;
     }
 
-    public void SetLookInput(Vector2 p_input)
+    public void SetLookInput(Vector2 input)
     {
-        m_lookInput = p_input;
+        _lookInput = input;
     }
 
-    public void SetMoveInput(Vector2 p_moveInput)
+    public void SetMoveInput(Vector2 moveInput)
     {
-        m_isMoving = p_moveInput != Vector2.zero;
-        m_wantsToMoveForward = p_moveInput.y > 0.1f;
+        _isMoving = moveInput != Vector2.zero;
+        _wantsToMoveForward = moveInput.y > 0.1f;
     }
 
     public void HandleRotation()
     {
-        float l_mouseX = m_lookInput.x * m_config.mouseSensitivity;
-        float l_mouseY = m_lookInput.y * m_config.mouseSensitivity;
+        float mouseX = _lookInput.x * _config.mouseSensitivity;
+        float mouseY = _lookInput.y * _config.mouseSensitivity;
 
-        RotateCameraYaw(l_mouseX);
-        RotateCameraPitch(l_mouseY);
+        RotateCameraYaw(mouseX);
+        RotateCameraPitch(mouseY);
 
         HandlePlayerRotation();
     }
 
-    private void RotateCameraYaw(float p_amount)
+    private void RotateCameraYaw(float amount)
     {
-        m_camRoot.Rotate(0f, p_amount, 0f, Space.World);
+        _camRoot.Rotate(0f, amount, 0f, Space.World);
     }
 
-    private void RotateCameraPitch(float p_amount)
+    private void RotateCameraPitch(float amount)
     {
-        m_verticalRotation = Mathf.Clamp(m_verticalRotation - p_amount, -m_config.upDownLimit, m_config.upDownLimit);
-        m_camPitch.localRotation = Quaternion.Euler(m_verticalRotation, 0f, 0f);
+        _verticalRotation = Mathf.Clamp(_verticalRotation - amount, -_config.upDownLimit, _config.upDownLimit);
+        _camPitch.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 
     private void HandlePlayerRotation()
     {
-        float l_targetYaw = m_camRoot.eulerAngles.y;
-        float l_currentYaw = m_player.eulerAngles.y;
-        float l_delta = Mathf.DeltaAngle(l_currentYaw, l_targetYaw);
+        float targetYaw = _camRoot.eulerAngles.y;
+        float currentYaw = _player.eulerAngles.y;
+        float delta = Mathf.DeltaAngle(currentYaw, targetYaw);
 
         // TURN-IN-PLACE gdy stoi
-        if (!IsTurning && m_wantsToMoveForward)
+        if (!IsTurning && _wantsToMoveForward)
         {
-            if (l_delta > MOVE_TURN_THRESHOLD)
+            if (delta > MoveTurnTreshold)
             {
                 StartTurn(true);
                 return;
             }
-            else if (l_delta < -MOVE_TURN_THRESHOLD)
+            else if (delta < -MoveTurnTreshold)
             {
                 StartTurn(false);
                 return;
@@ -91,27 +91,27 @@ public class PlayerRotation : IRotation, ITurnHandler
         }
 
         // AUTO-ROTATE — gdy idzie
-        if (m_isMoving && !IsTurning)
+        if (_isMoving && !IsTurning)
         {
-            float l_newYaw = Mathf.MoveTowardsAngle(l_currentYaw, l_targetYaw, ROTATE_SPEED * Time.deltaTime);
-            m_player.rotation = Quaternion.Euler(0, l_newYaw, 0);
+            float newYaw = Mathf.MoveTowardsAngle(currentYaw, targetYaw, RotateSpeed * Time.deltaTime);
+            _player.rotation = Quaternion.Euler(0, newYaw, 0);
             return;
         }
     }
 
-    public void StartTurn(bool p_right)
+    public void StartTurn(bool right)
     {
         IsTurning = true;
-        m_movement.CanMove = false;
-        m_animator.SetTrigger(p_right ? "TurnRight" : "TurnLeft");
+        _movement.CanMove = false;
+        _animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
     }
 
-    public void OnTurnFinished(bool p_right)
+    public void OnTurnFinished(bool right)
     {
         //float targetYaw = _camRoot.eulerAngles.y;
         //_player.rotation = Quaternion.Euler(0, targetYaw, 0);
 
         IsTurning = false;
-        m_movement.CanMove = true;
+        _movement.CanMove = true;
     }
 }

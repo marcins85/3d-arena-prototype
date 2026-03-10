@@ -2,44 +2,44 @@ using UnityEngine;
 
 public class PlayerJump : IJump
 {
-    private PlayerConfigSO m_config;
-    private bool m_canJump = true;
-    private float m_verticalVelocity = 0f;
-    private bool m_jumpTrigger;
+    private PlayerConfigSO _config;
+    private bool _canJump = true;
+    private float _verticalVelocity = 0f;
+    private bool _jumpTrigger;
 
-    public PlayerJump(PlayerConfigSO p_confg)
+    public PlayerJump(PlayerConfigSO confg)
     {
-        m_config = p_confg;
+        _config = confg;
     }
 
     public float GetVerticalVelocity()
     {
-        return m_verticalVelocity; 
+        return _verticalVelocity; 
     }
 
-    public void SetVerticalVelocity(float p_value)
+    public void SetVerticalVelocity(float value)
     {
-        m_verticalVelocity = p_value;
+        _verticalVelocity = value;
     }
 
-    public void SetJumpTrigger(bool p_trigger)
+    public void SetJumpTrigger(bool trigger)
     {
-        m_jumpTrigger = p_trigger;
+        _jumpTrigger = trigger;
     }
 
-    public void HandleJump(bool p_isGrounded)
+    public void HandleJump(bool isGrounded)
     {
-        if (p_isGrounded)
+        if (isGrounded)
         {
-            if (m_jumpTrigger && m_canJump)
+            if (_jumpTrigger && _canJump)
             {
-                m_verticalVelocity = m_config.jumpForce;
-                m_canJump = false;
+                _verticalVelocity = _config.jumpForce;
+                _canJump = false;
             }
 
-            if (!m_jumpTrigger)
+            if (!_jumpTrigger)
             {
-                m_canJump = true;
+                _canJump = true;
             }
         }
     }

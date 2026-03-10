@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class CamTargetFollow : MonoBehaviour
 {
-    [SerializeField] private Transform m_player;
-    [SerializeField] private Vector3 m_offset;
+    [SerializeField] private Transform _player;
+    [SerializeField] private Vector3 _offset;
 
     void LateUpdate()
     {
-        transform.position = m_player.position + m_offset;
+        transform.position = _player.position + _offset;
     }
 }
