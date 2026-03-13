@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 
 public interface ITurnHandler
@@ -21,8 +22,10 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     private const float RotateSpeed = 120f;
     private const float MoveTurnTreshold = 45f;
-    private bool _wantsToMoveForward;
     private bool _isMoving;
+    private bool _wantsToMove;
+    private bool _justStartedMovingForward = false;
+
 
     public bool IsTurning { get; private set; }
 
@@ -43,8 +46,15 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     public void SetMoveInput(Vector2 moveInput)
     {
-        _isMoving = moveInput != Vector2.zero;
-        _wantsToMoveForward = moveInput.y > 0.1f;
+        bool prevWantsToMove = _wantsToMove;
+
+        _wantsToMove = moveInput.y > 0.1f;
+
+        _justStartedMovingForward = !prevWantsToMove && _wantsToMove;
+
+        if (!_wantsToMove && !IsTurning)
+            _isMoving = false;
+
     }
 
     public void HandleRotation()
@@ -76,7 +86,7 @@ public class PlayerRotation : IRotation, ITurnHandler
         float delta = Mathf.DeltaAngle(currentYaw, targetYaw);
 
         // TURN-IN-PLACE gdy stoi
-        if (!IsTurning && _wantsToMoveForward)
+        if (!IsTurning && _justStartedMovingForward && !_isMoving)
         {
             if (delta > MoveTurnTreshold)
             {
@@ -91,7 +101,7 @@ public class PlayerRotation : IRotation, ITurnHandler
         }
 
         // AUTO-ROTATE — gdy idzie
-        if (_isMoving && !IsTurning)
+        if (!IsTurning && _isMoving)
         {
             float newYaw = Mathf.MoveTowardsAngle(currentYaw, targetYaw, RotateSpeed * Time.deltaTime);
             _player.rotation = Quaternion.Euler(0, newYaw, 0);
@@ -108,10 +118,11 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     public void OnTurnFinished(bool right)
     {
-        //float targetYaw = _camRoot.eulerAngles.y;
-        //_player.rotation = Quaternion.Euler(0, targetYaw, 0);
+        float targetYaw = _camRoot.eulerAngles.y;
+        _player.rotation = Quaternion.Euler(0, targetYaw, 0);
 
         IsTurning = false;
+        _isMoving = _wantsToMove;
         _movement.CanMove = true;
     }
 }
