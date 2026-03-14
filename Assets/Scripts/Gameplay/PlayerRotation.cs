@@ -22,7 +22,7 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     private const float RotateSpeed = 120f;
     private const float MoveTurnTreshold = 45f;
-    private bool _isMoving;
+    private bool _isMoving = false;
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
 
@@ -100,6 +100,12 @@ public class PlayerRotation : IRotation, ITurnHandler
             }
         }
 
+        // jeśli zaczynamy iść, ale turn-in-place się nie odpaliło
+        if (!IsTurning && _justStartedMovingForward && _wantsToMove && !_isMoving)
+        {
+            _isMoving = true;
+        }
+
         // AUTO-ROTATE — gdy idzie
         if (!IsTurning && _isMoving)
         {
@@ -118,9 +124,6 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     public void OnTurnFinished(bool right)
     {
-        float targetYaw = _camRoot.eulerAngles.y;
-        _player.rotation = Quaternion.Euler(0, targetYaw, 0);
-
         IsTurning = false;
         _isMoving = _wantsToMove;
         _movement.CanMove = true;
