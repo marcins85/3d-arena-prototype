@@ -6,5 +6,6 @@ public interface IMovement
     public bool CanMove { get; set; }
     public void SetMoveInput(Vector2 input);
     public void SetSprintTrigger(bool trigger);
+    public bool IsGroundedRaycast();
     public void HandleMovement(float verticalVelocity);
 }

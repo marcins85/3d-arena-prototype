@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: PlayerConfigSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerConfigSO
   walkSpeed: 1.5
-  sprintMultiplier: 1.5
-  jumpForce: 5
-  gravityMultiplier: 1
+  sprintMultiplier: 2.5
+  jumpForce: 3
+  gravityMultiplier: 0.4
   mouseSensitivity: 0.1
   upDownLimit: 20

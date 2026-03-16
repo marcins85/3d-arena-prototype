@@ -52,7 +52,7 @@ public class PlayerMovement : IMovement
         return worldDir.normalized;
     }
 
-    private bool IsGroundedRaycast()
+    public bool IsGroundedRaycast()
     {
         Vector3 origin = _characterController.bounds.center;
         origin.y = _characterController.bounds.min.y + 0.05f;
@@ -96,6 +96,7 @@ public class PlayerMovement : IMovement
 
         if (IsGroundedRaycast())
         {
+
             float moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
 
             Vector3 worldDirection = CalculateWorldDirection();

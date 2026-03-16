@@ -76,7 +76,7 @@ public class PlayerInput : IPlayerInput
 
     private void SprintPerformed(InputAction.CallbackContext ctx)
     {
-        OnSprint?.Invoke(true);
+        OnSprint?.Invoke(ctx.ReadValueAsButton());
     }
     private void SprintCanceled(InputAction.CallbackContext ctx)
     {
@@ -85,7 +85,7 @@ public class PlayerInput : IPlayerInput
 
     private void JumpPerformed(InputAction.CallbackContext ctx)
     {
-        OnJump?.Invoke(true);
+        OnJump?.Invoke(ctx.ReadValueAsButton());
     }
     private void JumpCanceled(InputAction.CallbackContext ctx)
     {

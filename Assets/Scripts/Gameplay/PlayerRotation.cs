@@ -27,7 +27,7 @@ public class PlayerRotation : IRotation, ITurnHandler
     private bool _justStartedMovingForward = false;
 
 
-    public bool IsTurning { get; private set; }
+    public bool IsTurning { get; set; }
 
     public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, Animator animator, IMovement movement, PlayerConfigSO config)
     {

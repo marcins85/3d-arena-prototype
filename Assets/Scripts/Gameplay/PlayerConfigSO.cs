@@ -5,7 +5,7 @@ public class PlayerConfigSO : ScriptableObject
 {
     [Header("Movement")]
     public float walkSpeed = 5f;
-    public float sprintMultiplier = 1.5f;
+    public float sprintMultiplier = 3.5f;
 
     [Header("Jump")]
     public float jumpForce = 5f;

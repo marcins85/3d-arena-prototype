@@ -4,4 +4,5 @@ public interface IJump
     public void SetVerticalVelocity(float value);
     public void SetJumpTrigger(bool trigger);
     public void HandleJump(bool isGrounded);
+    public bool CanJump { get; set; }
 }

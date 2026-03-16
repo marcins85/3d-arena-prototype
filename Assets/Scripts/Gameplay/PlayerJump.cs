@@ -1,15 +1,22 @@
 using UnityEngine;
 
-public class PlayerJump : IJump
+public interface IJumpHandler
+{
+    public void OnJumpStarted();
+    public void OnJumpFinished();
+}
+
+public class PlayerJump : IJump, IJumpHandler
 {
     private PlayerConfigSO _config;
-    private bool _canJump = true;
     private float _verticalVelocity = 0f;
     private bool _jumpTrigger;
+    public bool CanJump { get; set; }
 
     public PlayerJump(PlayerConfigSO confg)
     {
         _config = confg;
+        CanJump = true;
     }
 
     public float GetVerticalVelocity()
@@ -29,18 +36,23 @@ public class PlayerJump : IJump
 
     public void HandleJump(bool isGrounded)
     {
+        Debug.Log("canjump " + CanJump + ", trigger " + _jumpTrigger);
         if (isGrounded)
         {
-            if (_jumpTrigger && _canJump)
+            if (_jumpTrigger && CanJump)
             {
                 _verticalVelocity = _config.jumpForce;
-                _canJump = false;
-            }
-
-            if (!_jumpTrigger)
-            {
-                _canJump = true;
             }
         }
+    }
+
+    public void OnJumpStarted()
+    {
+        CanJump = false;
+    }
+
+    public void OnJumpFinished()
+    {
+        CanJump = true;
     }
 }
