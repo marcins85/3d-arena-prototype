@@ -17,9 +17,10 @@ public class PlayerController : MonoBehaviour
     private IMovement _movement;
     private IRotation _rotation;
     private IJump _jump;
+    private bool _isJumpAnimationPlaying;
+
 
     public ITurnHandler turnHandler;
-    public IJumpHandler jumpHandler;
 
 
     void Awake()
@@ -34,9 +35,7 @@ public class PlayerController : MonoBehaviour
         _rotation = rotation;
         turnHandler = rotation;
 
-        var jump = new PlayerJump(_config);
-        _jump = jump;
-        jumpHandler = jump;
+        _jump = new PlayerJump(_config);
     }
 
     private void Update()
@@ -95,22 +94,20 @@ public class PlayerController : MonoBehaviour
 
     private void OnJump(bool jump)
     {
-        if (_rotation.IsTurning == false && _jump.CanJump == true)
-        {
-            StartCoroutine(JumpTimeout(jump));
-        
-            if (jump)
-            {
-                _animator.SetTrigger("Jump");
-                //jumpHandler?.OnJumpStarted();
-            }
-        }
+        if (!jump) return;
+
+        if (_rotation.IsTurning) return;
+        if (!_jump.CanJump) return;
+        if (_isJumpAnimationPlaying) return;
+
+        _isJumpAnimationPlaying = true;
+        _animator.SetTrigger("Jump");
+
     }
 
-    private IEnumerator JumpTimeout(bool value)
+    public void OnJumpTakeOff()
     {
-        yield return new WaitForSeconds(0.5f);
-        _jump.SetJumpTrigger(value);
+        _jump.SetJumpTrigger(true);
     }
 
     public void OnJumpLanding()
@@ -120,9 +117,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnJumpFinished()
     {
-        _jump.CanJump = true;
-        //jumpHandler?.OnJumpFinished();
         _jump.SetJumpTrigger(false);
+        _isJumpAnimationPlaying = false;
     }
 
     public void OnTurnLeftFinished()

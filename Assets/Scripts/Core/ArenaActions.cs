@@ -116,7 +116,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""id"": ""b855e0e4-3278-4a66-8cf6-12dcf30c91b5"",
                     ""expectedControlType"": """",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 },
                 {
@@ -200,7 +200,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""eeeb736f-8fcc-4892-8a52-12bdbabea7fc"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Jump"",
