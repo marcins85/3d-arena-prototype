@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ public class PlayerRotation : IRotation, ITurnHandler
     private Transform _camPitch;
 
     private IAnimationSystem _animation;
-    private IMovement _movement;
 
     private float _verticalRotation;
     private Vector2 _lookInput;
@@ -26,16 +26,17 @@ public class PlayerRotation : IRotation, ITurnHandler
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
 
+    public event Action OnTurnStartedEvent;
+    public event Action OnTurnFinishedEvent;
 
     public bool IsTurning { get; set; }
 
-    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, IAnimationSystem animation, IMovement movement, PlayerConfigSO config)
+    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, IAnimationSystem animation, PlayerConfigSO config)
     {
         _camRoot = camRoot;
         _camPitch = camPitch;
         _player = player;
         _animation = animation;
-        _movement = movement;
         _config = config;
     }
 
@@ -86,19 +87,19 @@ public class PlayerRotation : IRotation, ITurnHandler
         float delta = Mathf.DeltaAngle(currentYaw, targetYaw);
 
         // TURN-IN-PLACE gdy stoi
-        //if (!IsTurning && _justStartedMovingForward && !_isMoving)
-        //{
-        //    if (delta > MoveTurnTreshold)
-        //    {
-        //        StartTurn(true);
-        //        return;
-        //    }
-        //    else if (delta < -MoveTurnTreshold)
-        //    {
-        //        StartTurn(false);
-        //        return;
-        //    }
-        //}
+        if (!IsTurning && _justStartedMovingForward && !_isMoving)
+        {
+            if (delta > MoveTurnTreshold)
+            {
+                StartTurn(true);
+                return;
+            }
+            else if (delta < -MoveTurnTreshold)
+            {
+                StartTurn(false);
+                return;
+            }
+        }
 
         // jeśli zaczynamy iść, ale turn-in-place się nie odpaliło
         if (!IsTurning && _justStartedMovingForward && _wantsToMove && !_isMoving)
@@ -118,14 +119,14 @@ public class PlayerRotation : IRotation, ITurnHandler
     public void StartTurn(bool right)
     {
         IsTurning = true;
-        _movement.CanMove = false;
         _animation.SetTurn(right);
+        OnTurnStartedEvent?.Invoke();
     }
 
     public void OnTurnFinished(bool right)
     {
         IsTurning = false;
         _isMoving = _wantsToMove;
-        _movement.CanMove = true;
+        OnTurnFinishedEvent?.Invoke();
     }
 }
