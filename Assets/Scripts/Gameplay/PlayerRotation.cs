@@ -14,7 +14,7 @@ public class PlayerRotation : IRotation, ITurnHandler
     private Transform _camRoot;
     private Transform _camPitch;
 
-    private Animator _animator;
+    private IAnimationSystem _animation;
     private IMovement _movement;
 
     private float _verticalRotation;
@@ -29,12 +29,12 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     public bool IsTurning { get; set; }
 
-    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, Animator animator, IMovement movement, PlayerConfigSO config)
+    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, IAnimationSystem animation, IMovement movement, PlayerConfigSO config)
     {
         _camRoot = camRoot;
         _camPitch = camPitch;
         _player = player;
-        _animator = animator;
+        _animation = animation;
         _movement = movement;
         _config = config;
     }
@@ -119,7 +119,7 @@ public class PlayerRotation : IRotation, ITurnHandler
     {
         IsTurning = true;
         _movement.CanMove = false;
-        _animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
+        _animation.SetTurn(right);
     }
 
     public void OnTurnFinished(bool right)

@@ -13,20 +13,24 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _camPitch;
     [SerializeField] private Animator _animator;
     [SerializeField] private LayerMask _groundMask;
+
     private IPlayerInput _input;
     private IMovement _movement;
     private IRotation _rotation;
     private IJump _jump;
-    private bool _isJumpAnimationPlaying;
     private ITurnHandler _turnHandler;
+    private IAnimationSystem _animation;
 
-    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input)
+    private bool _isJumpAnimationPlaying;
+
+    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IAnimationSystem animation)
     {
         _movement = movement;
         _rotation = rotation;
         _jump = jump;
         _input = input;
         _turnHandler = turnHandler;
+        _animation = animation;
     }
 
     void Awake()
@@ -77,34 +81,18 @@ public class PlayerController : MonoBehaviour
     {
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
-        _animator.SetFloat("MoveSpeed", velocity.y);
-        _animator.SetFloat("StrafeWalking", velocity.x);
-
+        _animation.UpdateMovement(velocity);
+        
         if (velocity.sqrMagnitude < 0.01f)
         {
             _movement.SetSprintTrigger(false);
-            _animator.SetBool("Sprint", false);
-        }
-
-        if (velocity.y < 0.01f)
-        {
-            _animator.SetFloat("StrafeWalking", 0);
-        }
-
-        if (velocity.y == 0f)
-        {
-            _animator.SetFloat("JogStrafeWalking", velocity.x);
-        }
-        else
-        {
-            _animator.SetFloat("JogStrafeWalking", 0);
         }
     }
 
     private void OnSprint(bool sprint)
     {
         _movement.SetSprintTrigger(sprint);
-        _animator.SetBool("Sprint", sprint);
+        _animation.SetSprint(sprint);
     }
 
     private void OnJump(bool jump)
@@ -116,8 +104,7 @@ public class PlayerController : MonoBehaviour
         if (_isJumpAnimationPlaying) return;
 
         _isJumpAnimationPlaying = true;
-        _animator.SetTrigger("Jump");
-
+        _animation.PlayJump();
     }
 
     public void OnJumpTakeOff()

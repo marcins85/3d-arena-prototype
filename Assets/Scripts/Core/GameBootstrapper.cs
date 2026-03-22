@@ -14,12 +14,13 @@ public class GameBootstrappper : MonoBehaviour
         var animator = _player.GetAnimator();
         var mask = _player.GetLayerMask();
 
+        IAnimationSystem animation = new AnimationSystem(animator);
         IPlayerInput input = new PlayerInput(asset);
         IMovement movement = new PlayerMovement(cc, _player.transform, camRoot, mask, config);
-        IRotation rotation = new PlayerRotation(camRoot, camPitch, _player.transform, animator, movement, config);
+        IRotation rotation = new PlayerRotation(camRoot, camPitch, _player.transform, animation, movement, config);
         IJump jump = new PlayerJump(config);
         ITurnHandler turnHandler = rotation as ITurnHandler;
 
-        _player.Inject(movement, rotation, jump, turnHandler, input);
+        _player.Inject(movement, rotation, jump, turnHandler, input, animation);
     }
 }
