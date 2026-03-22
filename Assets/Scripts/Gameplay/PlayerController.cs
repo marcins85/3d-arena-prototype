@@ -84,6 +84,15 @@ public class PlayerController : MonoBehaviour
         {
             _animator.SetFloat("StrafeWalking", 0);
         }
+
+        if (velocity.y == 0f)
+        {
+            _animator.SetFloat("JogStrafeWalking", velocity.x);
+        }
+        else
+        {
+            _animator.SetFloat("JogStrafeWalking", 0);
+        }
     }
 
     private void OnSprint(bool sprint)

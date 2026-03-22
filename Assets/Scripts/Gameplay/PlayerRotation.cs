@@ -48,7 +48,7 @@ public class PlayerRotation : IRotation, ITurnHandler
     {
         bool prevWantsToMove = _wantsToMove;
 
-        _wantsToMove = moveInput.y > 0.1f;
+        _wantsToMove = moveInput != Vector2.zero;//moveInput.y > 0.1f;
 
         _justStartedMovingForward = !prevWantsToMove && _wantsToMove;
 
@@ -86,19 +86,19 @@ public class PlayerRotation : IRotation, ITurnHandler
         float delta = Mathf.DeltaAngle(currentYaw, targetYaw);
 
         // TURN-IN-PLACE gdy stoi
-        if (!IsTurning && _justStartedMovingForward && !_isMoving)
-        {
-            if (delta > MoveTurnTreshold)
-            {
-                StartTurn(true);
-                return;
-            }
-            else if (delta < -MoveTurnTreshold)
-            {
-                StartTurn(false);
-                return;
-            }
-        }
+        //if (!IsTurning && _justStartedMovingForward && !_isMoving)
+        //{
+        //    if (delta > MoveTurnTreshold)
+        //    {
+        //        StartTurn(true);
+        //        return;
+        //    }
+        //    else if (delta < -MoveTurnTreshold)
+        //    {
+        //        StartTurn(false);
+        //        return;
+        //    }
+        //}
 
         // jeśli zaczynamy iść, ale turn-in-place się nie odpaliło
         if (!IsTurning && _justStartedMovingForward && _wantsToMove && !_isMoving)
