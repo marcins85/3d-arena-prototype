@@ -18,24 +18,30 @@ public class PlayerController : MonoBehaviour
     private IRotation _rotation;
     private IJump _jump;
     private bool _isJumpAnimationPlaying;
+    private ITurnHandler _turnHandler;
 
-
-    public ITurnHandler turnHandler;
-
+    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input)
+    {
+        _movement = movement;
+        _rotation = rotation;
+        _jump = jump;
+        _input = input;
+        _turnHandler = turnHandler;
+    }
 
     void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        _input = new PlayerInput(_asset);
-        _movement = new PlayerMovement(_characterController, transform, _camRoot, _groundMask, _config);
+        //_input = new PlayerInput(_asset);
+        //_movement = new PlayerMovement(_characterController, transform, _camRoot, _groundMask, _config);
 
-        var rotation = new PlayerRotation(_camRoot, _camPitch, transform, _animator, _movement, _config);
-        _rotation = rotation;
-        turnHandler = rotation;
+        //var rotation = new PlayerRotation(_camRoot, _camPitch, transform, _animator, _movement, _config);
+        //_rotation = rotation;
+        //_turnHandler = rotation;
 
-        _jump = new PlayerJump(_config);
+        //_jump = new PlayerJump(_config);
     }
 
     private void Update()
@@ -70,7 +76,7 @@ public class PlayerController : MonoBehaviour
     private void OnMove(Vector2 velocity)
     {
         _movement.SetMoveInput(velocity);
-        ((PlayerRotation)_rotation).SetMoveInput(velocity);
+        _rotation.SetMoveInput(velocity);
         _animator.SetFloat("MoveSpeed", velocity.y);
         _animator.SetFloat("StrafeWalking", velocity.x);
 
@@ -132,11 +138,19 @@ public class PlayerController : MonoBehaviour
 
     public void OnTurnLeftFinished()
     {
-        turnHandler?.OnTurnFinished(false);
+        _turnHandler?.OnTurnFinished(false);
     }
 
     public void OnTurnRightFinished()
     {
-        turnHandler?.OnTurnFinished(true);
+        _turnHandler?.OnTurnFinished(true);
     }
+
+    public PlayerConfigSO GetPlayerConfigSO() => _config;
+    public CharacterController GetCharacterController() => _characterController;
+    public InputActionAsset GetInputActionAsset() => _asset;
+    public Transform GetCamRoot() => _camRoot;
+    public Transform GetCamPitch() => _camPitch;
+    public Animator GetAnimator() => _animator;
+    public LayerMask GetLayerMask() => _groundMask;
 }
