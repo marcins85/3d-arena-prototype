@@ -38,15 +38,6 @@ public class PlayerController : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
-        //_input = new PlayerInput(_asset);
-        //_movement = new PlayerMovement(_characterController, transform, _camRoot, _groundMask, _config);
-
-        //var rotation = new PlayerRotation(_camRoot, _camPitch, transform, _animator, _movement, _config);
-        //_rotation = rotation;
-        //_turnHandler = rotation;
-
-        //_jump = new PlayerJump(_config);
     }
 
     private void Update()
@@ -86,7 +77,6 @@ public class PlayerController : MonoBehaviour
 
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
-        // _animation.UpdateMovement(velocity);
 
         if (velocity.sqrMagnitude < 0.01f)
         {

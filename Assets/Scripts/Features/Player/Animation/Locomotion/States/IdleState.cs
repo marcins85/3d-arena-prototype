@@ -26,7 +26,7 @@ public class IdleState : IState
 
         if (_ctx.Velocity.sqrMagnitude > 0.01f)
         {
-            _sm.SetState(new MoveState(_ctx, _sm));
+            _sm.SetState(_sm.Move);
         }
     }
 }

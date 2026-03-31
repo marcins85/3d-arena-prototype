@@ -41,7 +41,7 @@ public class MoveState : IState
         if (_ctx.Velocity.sqrMagnitude < 0.01f)
         {
             _ctx.Animator.SetBool("Sprint", false);
-            _sm.SetState(new IdleState(_ctx, _sm));
+            _sm.SetState(_sm.Idle);
         }
     }
 }

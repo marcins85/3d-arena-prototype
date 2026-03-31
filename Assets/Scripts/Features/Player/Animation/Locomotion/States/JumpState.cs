@@ -16,10 +16,14 @@ public class JumpState : IState
     public void Enter()
     {
         _ctx.Animator.SetTrigger("Jump");
+
+        _ctx.Animator.SetFloat("StrafeWalking", 0);
+        _ctx.Animator.SetFloat("JogStrafeWalking", 0);
     }
 
     public void Exit() 
     {
+        _hasLeftGround = false;
     }
 
     public void Update()
@@ -31,7 +35,7 @@ public class JumpState : IState
 
         if (_hasLeftGround && _ctx.IsGrounded)
         {
-            _sm.SetState(new IdleState(_ctx, _sm));
+            _sm.SetState(_sm.Idle);
         }
     }
 }

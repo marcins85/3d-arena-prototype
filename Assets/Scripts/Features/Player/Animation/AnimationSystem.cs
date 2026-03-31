@@ -13,13 +13,13 @@ public class AnimationSystem : IAnimationSystem
             Animator = animator
         };
 
-        _sm = new LocomotionStateMachine();
-        _sm.SetState(new IdleState(_ctx, _sm));
+        _sm = new LocomotionStateMachine(_ctx);
+        _sm.SetState(_sm.Idle);
     }
 
     public void PlayJump()
     {
-        _sm.SetState(new JumpState(_ctx, _sm));
+        _sm.SetState(_sm.Jump);
     }
 
     public void SetSprint(bool sprint)
