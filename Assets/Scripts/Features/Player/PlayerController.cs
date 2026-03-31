@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private IAnimationSystem _animation;
 
     private bool _isJumpAnimationPlaying;
+    private Vector2 _moveInput;
 
     public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IAnimationSystem animation)
     {
@@ -56,6 +57,8 @@ public class PlayerController : MonoBehaviour
         _movement.HandleMovement(y);
         _jump.SetVerticalVelocity(_movement.CurrentVerticalVelocity);
         _rotation.HandleRotation();
+
+        _animation.Update(_moveInput, grounded);
     }
 
     private void OnEnable()
@@ -79,10 +82,12 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(Vector2 velocity)
     {
+        _moveInput = velocity;
+
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
-        _animation.UpdateMovement(velocity);
-        
+        // _animation.UpdateMovement(velocity);
+
         if (velocity.sqrMagnitude < 0.01f)
         {
             _movement.SetSprintTrigger(false);
