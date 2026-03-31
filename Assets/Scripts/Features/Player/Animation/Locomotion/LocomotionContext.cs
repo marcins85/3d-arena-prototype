@@ -1,3 +1,4 @@
+using UnityEngine;
 public class LocomotionContext
 {
     public Animator Animator;

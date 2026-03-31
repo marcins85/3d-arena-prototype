@@ -3,7 +3,7 @@ public class JumpState : IState
     private LocomotionContext _ctx;
     private LocomotionStateMachine _sm;
 
-    public JumpState(LocomotionContext ctx, LocootionStateMachine sm)
+    public JumpState(LocomotionContext ctx, LocomotionStateMachine sm)
     {
         _ctx = ctx;
         _sm = sm;

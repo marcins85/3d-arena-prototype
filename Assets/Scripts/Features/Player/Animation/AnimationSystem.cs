@@ -19,19 +19,22 @@ public class AnimationSystem : IAnimationSystem
         _sm.SetState(new IdleState(_ctx, _sm));
     }
 
-    // public void PlayJump()
-    // {
-    //     _animator.SetTrigger("Jump");
-    // }
+    public void PlayJump()
+    {
+        //_animator.SetTrigger("Jump");
+        _sm.SetState(new JumpState(_ctx, _sm));
+    }
 
     public void SetSprint(bool sprint)
     {
-        _animator.SetBool("Sprint", sprint);
+        //_animator.SetBool("Sprint", sprint);
+        _ctx.Animator.SetBool("Sprint", sprint);
     }
 
     public void SetTurn(bool right)
     {
-        _animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
+        //_animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
+        _ctx.Animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
     }
 
     // public void UpdateMovement(Vector2 velocity)
