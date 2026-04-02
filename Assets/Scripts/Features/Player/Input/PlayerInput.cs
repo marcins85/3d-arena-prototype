@@ -22,11 +22,11 @@ public class PlayerInput : IPlayerInput
 
     public PlayerInput(InputActionAsset asset)
     {
-        var l_map = asset.FindActionMap(_mapName);
-        _moveAction = l_map.FindAction(_moveName);
-        _lookAction = l_map.FindAction(_lookName);
-        _sprintAction = l_map.FindAction(_sprintName);
-        _jumpAction = l_map.FindAction(_jumpName);
+        var map = asset.FindActionMap(_mapName);
+        _moveAction = map.FindAction(_moveName);
+        _lookAction = map.FindAction(_lookName);
+        _sprintAction = map.FindAction(_sprintName);
+        _jumpAction = map.FindAction(_jumpName);
 
         _moveAction.performed += MovePerformed;
         _moveAction.canceled += MoveCanceled;

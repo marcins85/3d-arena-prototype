@@ -7,6 +7,6 @@ public interface IRotation
     public void SetLookInput(Vector2 input);
     public void SetMoveInput(Vector2 input);
     public void HandleRotation();
-    public event Action OnTurnStartedEvent;
+    public event Action<bool> OnTurnStartedEvent;
     public event Action OnTurnFinishedEvent;
 }

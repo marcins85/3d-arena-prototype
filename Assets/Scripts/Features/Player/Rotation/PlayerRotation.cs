@@ -26,17 +26,16 @@ public class PlayerRotation : IRotation, ITurnHandler
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
 
-    public event Action OnTurnStartedEvent;
+    public event Action<bool> OnTurnStartedEvent;
     public event Action OnTurnFinishedEvent;
 
     public bool IsTurning { get; set; }
 
-    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, IAnimationSystem animation, PlayerConfigSO config)
+    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, PlayerConfigSO config)
     {
         _camRoot = camRoot;
         _camPitch = camPitch;
         _player = player;
-        _animation = animation;
         _config = config;
     }
 
@@ -119,8 +118,7 @@ public class PlayerRotation : IRotation, ITurnHandler
     public void StartTurn(bool right)
     {
         IsTurning = true;
-        _animation.SetTurn(right);
-        OnTurnStartedEvent?.Invoke();
+        OnTurnStartedEvent?.Invoke(right);
     }
 
     public void OnTurnFinished(bool right)
