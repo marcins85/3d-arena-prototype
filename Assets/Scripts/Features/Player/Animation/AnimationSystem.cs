@@ -6,20 +6,30 @@ public class AnimationSystem : IAnimationSystem
     private readonly LocomotionStateMachine _sm;
     private readonly LocomotionContext _ctx;
 
-    public AnimationSystem(Animator animator)
+    public AnimationSystem(Animator animator, IJump jump)
     {
         _ctx = new LocomotionContext
         {
             Animator = animator
         };
 
-        _sm = new LocomotionStateMachine(_ctx);
+        _sm = new LocomotionStateMachine(_ctx, jump);
         _sm.SetState(_sm.Idle);
     }
 
-    public void PlayJump()
+    public void OnJumpTakeOff()
     {
-        _sm.SetState(_sm.Jump);
+        _sm.HandleAnimationEvent("OnJumpTakeOff");
+    }
+
+    public void OnJumpLanding()
+    {
+        _sm.HandleAnimationEvent("OnJumpLanding");
+    }
+
+    public void OnJumpFinished()
+    {
+        _sm.HandleAnimationEvent("OnJumpFinished");
     }
 
     public void SetSprint(bool sprint)
@@ -32,10 +42,12 @@ public class AnimationSystem : IAnimationSystem
         _ctx.Animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
     }
 
-    public void Update(Vector2 velocity, bool isGrounded)
+    public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
         _ctx.Velocity = velocity;
         _ctx.IsGrounded = isGrounded;
+        _ctx.VerticalVelocity = verticalVelocity;
+        _ctx.JumpRequest = jumpRequest;
 
         _sm.Update();
     }

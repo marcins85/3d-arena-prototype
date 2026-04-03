@@ -83,11 +83,6 @@ public class PlayerMovement : IMovement
         {
             _currentMovement.x = 0;
             _currentMovement.z = 0;
-
-            verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
-            if (verticalVelocity < 0f)
-                verticalVelocity = -2f;
-
             _currentMovement.y = verticalVelocity;
             _characterController.Move(_currentMovement * Time.deltaTime);
             return;
@@ -108,18 +103,6 @@ public class PlayerMovement : IMovement
         {
             _currentMovement.x = _airMovement.x;
             _currentMovement.z = _airMovement.z;
-        }
-
-        if (IsGroundedRaycast())
-        {
-            if (verticalVelocity < 0f)
-            {
-                verticalVelocity = -2f;
-            }
-        }
-        else
-        {
-            verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
         }
 
         _currentMovement.y = verticalVelocity;

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class StateMachine
 {
     private IState _currentState;
@@ -13,5 +15,9 @@ public class StateMachine
     public void Update()
     {
         _currentState?.Update();
+    }
+    public void HandleAnimationEvent(string evt)
+    {
+        _currentState?.OnAnimationEvent(evt);
     }
 }

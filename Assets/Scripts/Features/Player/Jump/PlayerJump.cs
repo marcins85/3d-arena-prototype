@@ -32,13 +32,23 @@ public class PlayerJump : IJump
     {
         if (isGrounded)
         {
-            CanJump = true;
-            if (_jumpTrigger && CanJump)
+            if (_verticalVelocity < 0f)
+                _verticalVelocity = -2f;
+
+            if (_jumpTrigger)
             {
                 _verticalVelocity = _config.jumpForce;
-                CanJump = false;
                 _jumpTrigger = false;
+                CanJump = false;
             }
+            else
+            {
+                CanJump = true;
+            }
+        }
+        else
+        {
+            _verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
         }
     }
 }

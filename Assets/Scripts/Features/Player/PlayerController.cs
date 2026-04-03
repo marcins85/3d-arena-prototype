@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     private IAnimationSystem _animation;
 
     private bool _isJumpAnimationPlaying;
+    private bool _jumpRequest = false;
     private Vector2 _moveInput;
 
     public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IAnimationSystem animation)
@@ -49,7 +50,8 @@ public class PlayerController : MonoBehaviour
         _jump.SetVerticalVelocity(_movement.CurrentVerticalVelocity);
         _rotation.HandleRotation();
 
-        _animation.Update(_moveInput, grounded);
+        _animation.Update(_moveInput, grounded, _movement.CurrentVerticalVelocity, _jumpRequest);
+        _jumpRequest = false;
     }
 
     private void OnEnable()
@@ -99,23 +101,28 @@ public class PlayerController : MonoBehaviour
         if (_isJumpAnimationPlaying) return;
 
         _isJumpAnimationPlaying = true;
-        _animation.PlayJump();
+        _jumpRequest = true;
+        //_animation.PlayJump();
     }
 
     public void OnJumpTakeOff()
     {
-        _jump.SetJumpTrigger(true);
+        //_jump.SetJumpTrigger(true);
+        _animation.OnJumpTakeOff();
     }
 
     public void OnJumpLanding()
     {
-        _jump.SetVerticalVelocity(0f);
+        //_jump.SetVerticalVelocity(0f);
+        _animation.OnJumpLanding();
     }
 
     public void OnJumpFinished()
     {
         _jump.SetJumpTrigger(false);
         _isJumpAnimationPlaying = false;
+        _animation.OnJumpFinished();
+        //_jumpRequest = false;
     }
 
     public void OnTurnLeftFinished()

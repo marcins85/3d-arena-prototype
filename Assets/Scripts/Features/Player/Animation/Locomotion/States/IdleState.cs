@@ -16,13 +16,18 @@ public class IdleState : IState
 
     public void Exit() { }
 
+    public void OnAnimationEvent(string evt)
+    {
+    }
+
     public void Update()
     {
-        //if (!_ctx.IsGrounded)
-        //{
-        //    _sm.SetState(new JumpState(_ctx, _sm));
-        //    return;
-        //}
+        if (_ctx.JumpRequest)
+        {
+            _sm.SetState(_sm.Jump);
+            _ctx.JumpRequest = false;
+            return;
+        }
 
         if (_ctx.Velocity.sqrMagnitude > 0.01f)
         {
