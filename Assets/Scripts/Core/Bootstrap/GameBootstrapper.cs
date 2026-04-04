@@ -18,16 +18,8 @@ public class GameBootstrappper : MonoBehaviour
         IMovement movement = new PlayerMovement(cc, _player.transform, camRoot, mask, config);
         IRotation rotation = new PlayerRotation(camRoot, camPitch, _player.transform, config);
         IJump jump = new PlayerJump(config);
-        IAnimationSystem animation = new AnimationSystem(animator, jump);
+        IAnimationSystem animation = new AnimationSystem(config, movement, animator, jump, rotation);
         ITurnHandler turnHandler = rotation as ITurnHandler;
-
-        rotation.OnTurnStartedEvent += (right) =>
-        {
-            movement.CanMove = false;
-            animation.SetTurn(right);
-        };
-
-        rotation.OnTurnFinishedEvent += () => movement.CanMove = true;
 
         _player.Inject(movement, rotation, jump, turnHandler, input, animation);
     }

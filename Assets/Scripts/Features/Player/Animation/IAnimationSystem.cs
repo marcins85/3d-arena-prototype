@@ -7,5 +7,6 @@ public interface IAnimationSystem
     public void OnJumpTakeOff();
     public void OnJumpLanding();
     public void OnJumpFinished();
-    public void SetTurn(bool right);
+    public void OnTurnLeftFinished();
+    public void OnTurnRightFinished();
 }

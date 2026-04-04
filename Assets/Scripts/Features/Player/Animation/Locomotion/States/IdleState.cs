@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class IdleState : IState
 {
     private LocomotionContext _ctx;
@@ -22,6 +24,24 @@ public class IdleState : IState
 
     public void Update()
     {
+        // TURN-IN-PLACE gdy stoi
+        float delta = _ctx.Rotation.GetDeltaYaw();
+        if (!_ctx.Rotation.IsTurning && _ctx.Rotation.JustStartedMovingForward && !_ctx.Rotation.IsMoving)
+        {
+            if (delta > _ctx.Config.moveTurnTreshold)
+            {
+                _sm.Turn.SetDirection(true);
+                _sm.SetState(_sm.Turn);
+                return;
+            }
+            else if (delta < -_ctx.Config.moveTurnTreshold)
+            {
+                _sm.Turn.SetDirection(false);
+                _sm.SetState(_sm.Turn);
+                return;
+            }
+        }
+
         if (_ctx.JumpRequest)
         {
             _sm.SetState(_sm.Jump);

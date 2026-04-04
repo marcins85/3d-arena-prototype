@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class MoveState : IState
 {
     private LocomotionContext _ctx;
@@ -9,7 +11,10 @@ public class MoveState : IState
         _sm = sm;
     }
 
-    public void Enter() { }
+    public void Enter() 
+    {
+        _ctx.Rotation.IsMoving = true;
+    }
 
     public void Exit() { }
 
@@ -46,6 +51,7 @@ public class MoveState : IState
         if (_ctx.Velocity.sqrMagnitude < 0.01f)
         {
             _ctx.Animator.SetBool("Sprint", false);
+            _ctx.Movement.SetSprintTrigger(false);
             _sm.SetState(_sm.Idle);
         }
     }

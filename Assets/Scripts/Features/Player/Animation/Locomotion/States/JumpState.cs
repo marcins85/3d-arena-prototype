@@ -3,14 +3,12 @@ public class JumpState : IState
 {
     private LocomotionContext _ctx;
     private LocomotionStateMachine _sm;
-    private IJump _jump;
     private bool _hasLeftGround;
 
-    public JumpState(LocomotionContext ctx, LocomotionStateMachine sm, IJump jump)
+    public JumpState(LocomotionContext ctx, LocomotionStateMachine sm)
     {
         _ctx = ctx;
         _sm = sm;
-        _jump = jump;
         _hasLeftGround = false;
     }
 
@@ -32,16 +30,17 @@ public class JumpState : IState
     {
         if (evt == "OnJumpTakeOff")
         {
-            _jump.SetJumpTrigger(true);
+            _ctx.Jump.SetJumpTrigger(true);
         }
 
         if (evt == "OnJumpLanding")
         {
-            _jump.SetVerticalVelocity(0f);
+            _ctx.Jump.SetVerticalVelocity(0f);
         }
 
         if (evt == "OnJumpFinished")
         {
+            _ctx.Jump.SetJumpTrigger(false);
             _ctx.JumpRequest = false;
         }
 

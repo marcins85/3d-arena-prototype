@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using UnityEngine;
 
 public interface ITurnHandler
@@ -7,7 +6,7 @@ public interface ITurnHandler
     void OnTurnFinished(bool right);
 }
 
-public class PlayerRotation : IRotation, ITurnHandler
+public class PlayerRotation : IRotation//, ITurnHandler
 {
     private PlayerConfigSO _config;
 
@@ -21,13 +20,13 @@ public class PlayerRotation : IRotation, ITurnHandler
     private Vector2 _lookInput;
 
     private const float RotateSpeed = 120f;
-    private const float MoveTurnTreshold = 45f;
-    private bool _isMoving = false;
+    private bool _isMoving;
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
-
-    public event Action<bool> OnTurnStartedEvent;
-    public event Action OnTurnFinishedEvent;
+    
+    public bool IsMoving { get => _isMoving; set => _isMoving = value; }
+    public bool WantsToMove { get => _wantsToMove; set => _wantsToMove = value; }
+    public bool JustStartedMovingForward { get => _justStartedMovingForward; set => _justStartedMovingForward = value; }
 
     public bool IsTurning { get; set; }
 
@@ -46,14 +45,14 @@ public class PlayerRotation : IRotation, ITurnHandler
 
     public void SetMoveInput(Vector2 moveInput)
     {
-        bool prevWantsToMove = _wantsToMove;
+        bool prevWantsToMove = WantsToMove;
 
-        _wantsToMove = moveInput != Vector2.zero;//moveInput.y > 0.1f;
+        WantsToMove = moveInput != Vector2.zero;//moveInput.y > 0.1f;
 
-        _justStartedMovingForward = !prevWantsToMove && _wantsToMove;
+        JustStartedMovingForward = !prevWantsToMove && WantsToMove;
 
-        if (!_wantsToMove && !IsTurning)
-            _isMoving = false;
+        if (!WantsToMove && !IsTurning)
+            IsMoving = false;
 
     }
 
@@ -79,52 +78,33 @@ public class PlayerRotation : IRotation, ITurnHandler
         _camPitch.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 
+    public float GetDeltaYaw()
+    {
+        float targetYaw = _camRoot.eulerAngles.y;
+        float currentYaw = _player.eulerAngles.y;
+        return Mathf.DeltaAngle(currentYaw, targetYaw);
+    }
+
     private void HandlePlayerRotation()
     {
         float targetYaw = _camRoot.eulerAngles.y;
         float currentYaw = _player.eulerAngles.y;
-        float delta = Mathf.DeltaAngle(currentYaw, targetYaw);
 
-        // TURN-IN-PLACE gdy stoi
-        if (!IsTurning && _justStartedMovingForward && !_isMoving)
-        {
-            if (delta > MoveTurnTreshold)
-            {
-                StartTurn(true);
-                return;
-            }
-            else if (delta < -MoveTurnTreshold)
-            {
-                StartTurn(false);
-                return;
-            }
-        }
+        //// TURN-IN-PLACE gdy stoi
+        if (!IsTurning && JustStartedMovingForward && !IsMoving) return;
 
         // jeśli zaczynamy iść, ale turn-in-place się nie odpaliło
-        if (!IsTurning && _justStartedMovingForward && _wantsToMove && !_isMoving)
+        if (!IsTurning && JustStartedMovingForward && WantsToMove && !IsMoving)
         {
-            _isMoving = true;
+            IsMoving = true;
         }
 
         // AUTO-ROTATE — gdy idzie
-        if (!IsTurning && _isMoving)
+        if (!IsTurning && IsMoving)
         {
             float newYaw = Mathf.MoveTowardsAngle(currentYaw, targetYaw, RotateSpeed * Time.deltaTime);
             _player.rotation = Quaternion.Euler(0, newYaw, 0);
             return;
         }
-    }
-
-    public void StartTurn(bool right)
-    {
-        IsTurning = true;
-        OnTurnStartedEvent?.Invoke(right);
-    }
-
-    public void OnTurnFinished(bool right)
-    {
-        IsTurning = false;
-        _isMoving = _wantsToMove;
-        OnTurnFinishedEvent?.Invoke();
     }
 }

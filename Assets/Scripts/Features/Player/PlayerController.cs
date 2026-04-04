@@ -18,10 +18,8 @@ public class PlayerController : MonoBehaviour
     private IMovement _movement;
     private IRotation _rotation;
     private IJump _jump;
-    private ITurnHandler _turnHandler;
     private IAnimationSystem _animation;
 
-    private bool _isJumpAnimationPlaying;
     private bool _jumpRequest = false;
     private Vector2 _moveInput;
 
@@ -31,7 +29,6 @@ public class PlayerController : MonoBehaviour
         _rotation = rotation;
         _jump = jump;
         _input = input;
-        _turnHandler = turnHandler;
         _animation = animation;
     }
 
@@ -50,8 +47,9 @@ public class PlayerController : MonoBehaviour
         _jump.SetVerticalVelocity(_movement.CurrentVerticalVelocity);
         _rotation.HandleRotation();
 
-        _animation.Update(_moveInput, grounded, _movement.CurrentVerticalVelocity, _jumpRequest);
+        bool jumpRequested = _jumpRequest;
         _jumpRequest = false;
+        _animation.Update(_moveInput, grounded, _movement.CurrentVerticalVelocity, jumpRequested);
     }
 
     private void OnEnable()
@@ -79,11 +77,6 @@ public class PlayerController : MonoBehaviour
 
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
-
-        if (velocity.sqrMagnitude < 0.01f)
-        {
-            _movement.SetSprintTrigger(false);
-        }
     }
 
     private void OnSprint(bool sprint)
@@ -95,44 +88,35 @@ public class PlayerController : MonoBehaviour
     private void OnJump(bool jump)
     {
         if (!jump) return;
-
         if (_rotation.IsTurning) return;
         if (!_jump.CanJump) return;
-        if (_isJumpAnimationPlaying) return;
 
-        _isJumpAnimationPlaying = true;
         _jumpRequest = true;
-        //_animation.PlayJump();
     }
 
     public void OnJumpTakeOff()
     {
-        //_jump.SetJumpTrigger(true);
         _animation.OnJumpTakeOff();
     }
 
     public void OnJumpLanding()
     {
-        //_jump.SetVerticalVelocity(0f);
         _animation.OnJumpLanding();
     }
 
     public void OnJumpFinished()
     {
-        _jump.SetJumpTrigger(false);
-        _isJumpAnimationPlaying = false;
         _animation.OnJumpFinished();
-        //_jumpRequest = false;
     }
 
     public void OnTurnLeftFinished()
     {
-        _turnHandler?.OnTurnFinished(false);
+        _animation.OnTurnLeftFinished();
     }
 
     public void OnTurnRightFinished()
     {
-        _turnHandler?.OnTurnFinished(true);
+        _animation.OnTurnRightFinished();
     }
 
     public PlayerConfigSO GetPlayerConfigSO() => _config;

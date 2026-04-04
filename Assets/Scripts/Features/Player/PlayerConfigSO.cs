@@ -14,5 +14,5 @@ public class PlayerConfigSO : ScriptableObject
     [Header("Rotation")]
     public float mouseSensitivity = 0.1f;
     public float upDownLimit = 80f;
-
+    public float moveTurnTreshold = 45f;
 }
