@@ -3,12 +3,14 @@ using UnityEngine;
 
 public class AnimationSystem : IAnimationSystem
 {
-    private readonly LocomotionStateMachine _sm;
-    private readonly LocomotionContext _ctx;
+    private readonly LocomotionStateMachine _locomotion;
+    private readonly LocomotionContext _locomotionCtx;
+    private readonly ActionStateMachine _action;
+    private readonly ActionContext _actionCtx;
 
     public AnimationSystem(PlayerConfigSO config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
     {
-        _ctx = new LocomotionContext
+        _locomotionCtx = new LocomotionContext
         {
             Config = config,
             Movement = movement,
@@ -17,52 +19,50 @@ public class AnimationSystem : IAnimationSystem
             Animator = animator
         };
 
-        _sm = new LocomotionStateMachine(_ctx);
-        _sm.SetState(_sm.Idle);
+        _locomotion = new LocomotionStateMachine(_locomotionCtx);
+        _locomotion.SetState(_locomotion.Idle);
+
+        _action = new ActionStateMachine(_actionCtx);
     }
 
     public void OnJumpTakeOff()
     {
-        _sm.HandleAnimationEvent("OnJumpTakeOff");
+        _locomotion.HandleAnimationEvent("OnJumpTakeOff");
     }
 
     public void OnJumpLanding()
     {
-        _sm.HandleAnimationEvent("OnJumpLanding");
+        _locomotion.HandleAnimationEvent("OnJumpLanding");
     }
 
     public void OnJumpFinished()
     {
-        _sm.HandleAnimationEvent("OnJumpFinished");
+        _locomotion.HandleAnimationEvent("OnJumpFinished");
     }
 
     public void OnTurnLeftFinished()
     {
-        _sm.HandleAnimationEvent("OnTurnLeftFinished");
+        _locomotion.HandleAnimationEvent("OnTurnLeftFinished");
     }
 
     public void OnTurnRightFinished()
     {
-        _sm.HandleAnimationEvent("OnTurnRightFinished");
+        _locomotion.HandleAnimationEvent("OnTurnRightFinished");
     }
 
     public void SetSprint(bool sprint)
     {
-        _ctx.Animator.SetBool("Sprint", sprint);
+        _locomotionCtx.Animator.SetBool("Sprint", sprint);
     }
-
-    //public void SetTurn(bool right)
-    //{
-    //    _ctx.Animator.SetTrigger(right ? "TurnRight" : "TurnLeft");
-    //}
 
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
-        _ctx.Velocity = velocity;
-        _ctx.IsGrounded = isGrounded;
-        _ctx.VerticalVelocity = verticalVelocity;
-        _ctx.JumpRequest = jumpRequest;
+        _locomotionCtx.Velocity = velocity;
+        _locomotionCtx.IsGrounded = isGrounded;
+        _locomotionCtx.VerticalVelocity = verticalVelocity;
+        _locomotionCtx.JumpRequest = jumpRequest;
 
-        _sm.Update();
+        _locomotion.Update();
+        _action.Update();
     }
 }
