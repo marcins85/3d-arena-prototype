@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : IMovement
 {
@@ -63,6 +61,16 @@ public class PlayerMovement : IMovement
             0.3f,
             _groundMask
         );
+
+        //return Physics.SphereCast(
+        //    _characterController.bounds.center,
+        //    _characterController.radius * 0.9f,
+        //    Vector3.down,
+        //    out _,
+        //    0.2f,
+        //    _groundMask
+        //);
+
     }
 
     public void SetMoveInput(Vector2 input)
@@ -106,6 +114,13 @@ public class PlayerMovement : IMovement
         }
 
         _currentMovement.y = verticalVelocity;
+
+        //_currentMovement = Vector3.Lerp(
+        //    _currentMovement,
+        //    targetMovement,
+        //    _config.acceleration * Time.deltaTime
+        //);
+
         _characterController.Move(_currentMovement * Time.deltaTime);
     }
 }

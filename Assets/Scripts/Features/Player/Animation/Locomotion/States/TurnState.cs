@@ -35,7 +35,15 @@ public class TurnState : IState
             _ctx.Rotation.IsTurning = false;
             _ctx.Rotation.IsMoving = _ctx.Rotation.WantsToMove;
             _ctx.Movement.CanMove = true;
-            _sm.SetState(_sm.Move);
+
+            if (_ctx.Rotation.IsMoving)
+            {
+                _sm.SetState(_sm.Move);
+            }
+            else
+            {
+                _sm.SetState(_sm.Idle);
+            }
         }
     }
 
