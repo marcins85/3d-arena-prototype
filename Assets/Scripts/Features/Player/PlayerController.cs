@@ -57,16 +57,20 @@ public class PlayerController : MonoBehaviour
         _input.Enable();
 
         _input.OnMove += OnMove;
-        _input.OnLook += _rotation.SetLookInput;
+        _input.OnLook += OnLook;
         _input.OnSprint += OnSprint;
         _input.OnJump += OnJump;
+        _input.OnAttack1 += OnAttack1;
+        _input.OnAttack2 += OnAttack2;
     }
     private void OnDisable()
     {
         _input.OnMove -= OnMove;
-        _input.OnLook -= _rotation.SetLookInput;
+        _input.OnLook -= OnLook;
         _input.OnSprint -= OnSprint;
         _input.OnJump -= OnJump;
+        _input.OnAttack1 -= OnAttack1;
+        _input.OnAttack2 -= OnAttack2;
 
         _input.Disable();
     }
@@ -77,6 +81,11 @@ public class PlayerController : MonoBehaviour
 
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
+    }
+
+    private void OnLook(Vector2 input)
+    {
+        _rotation.SetLookInput(input);
     }
 
     private void OnSprint(bool sprint)
@@ -92,6 +101,20 @@ public class PlayerController : MonoBehaviour
         if (!_jump.CanJump) return;
 
         _jumpRequest = true;
+    }
+
+    private void OnAttack1(bool pressed)
+    {
+        if (!pressed) return;
+
+        _animation.RequestAttack1();
+    }
+
+    private void OnAttack2(bool pressed)
+    {
+        if (!pressed) return;
+
+        _animation.RequestAttack2();
     }
 
     public void OnJumpTakeOff()
@@ -117,6 +140,11 @@ public class PlayerController : MonoBehaviour
     public void OnTurnRightFinished()
     {
         _animation.OnTurnRightFinished();
+    }
+
+    public void OnAttackFinished()
+    {
+        _animation.OnAttackFinished();
     }
 
     public PlayerConfigSO GetPlayerConfigSO() => _config;

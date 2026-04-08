@@ -13,21 +13,30 @@ public class AttackState : IState
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        if (_ctx.Attack1Request)
+        {
+            _ctx.Animator.SetTrigger("Attack1");
+        }
+
+        if (_ctx.Attack2Request)
+        {
+            _ctx.Animator.SetTrigger("Attack2");
+        }
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnAnimationEvent(string evt)
     {
-        throw new System.NotImplementedException();
+        if (evt == "OnAttackFinished")
+        {
+            _sm.SetState(_sm.AIdle);
+        }
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
     }
 }

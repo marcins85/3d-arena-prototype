@@ -4,11 +4,15 @@ public class IdleState : IState
 {
     private LocomotionContext _ctx;
     private LocomotionStateMachine _sm;
+    private ActionContext _actx;
+    private ActionStateMachine _asm;
 
-    public IdleState(LocomotionContext ctx, LocomotionStateMachine sm)
+    public IdleState(LocomotionContext ctx, LocomotionStateMachine sm, ActionContext actx, ActionStateMachine asm)
     {
         _ctx = ctx;
         _sm = sm;
+        _actx = actx;
+        _asm = asm;
     }
 
     public void Enter()
@@ -46,6 +50,13 @@ public class IdleState : IState
         {
             _sm.SetState(_sm.Jump);
             _ctx.JumpRequest = false;
+            return;
+        }
+        if (_actx.Attack1Request || _actx.Attack2Request)
+        {
+            _asm.SetState(_asm.Attack);
+            if (_actx.Attack1Request) _actx.Attack1Request = false;
+            if (_actx.Attack2Request) _actx.Attack2Request = false;
             return;
         }
 

@@ -92,6 +92,7 @@ public class PlayerMovement : IMovement
             _currentMovement.x = 0;
             _currentMovement.z = 0;
             _currentMovement.y = verticalVelocity;
+
             _characterController.Move(_currentMovement * Time.deltaTime);
             return;
         }

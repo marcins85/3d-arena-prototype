@@ -19,10 +19,15 @@ public class AnimationSystem : IAnimationSystem
             Animator = animator
         };
 
-        _locomotion = new LocomotionStateMachine(_locomotionCtx);
-        _locomotion.SetState(_locomotion.Idle);
+        _actionCtx = new ActionContext
+        {
+            Animator = animator
+        };
 
         _action = new ActionStateMachine(_actionCtx);
+        _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
+        _locomotion.SetState(_locomotion.Idle);
+
     }
 
     public void OnJumpTakeOff()
@@ -50,9 +55,24 @@ public class AnimationSystem : IAnimationSystem
         _locomotion.HandleAnimationEvent("OnTurnRightFinished");
     }
 
+    public void OnAttackFinished()
+    {
+        _action.HandleAnimationEvent("OnAttackFinished");
+    }
+
     public void SetSprint(bool sprint)
     {
         _locomotionCtx.Animator.SetBool("Sprint", sprint);
+    }
+
+    public void RequestAttack1()
+    {
+        _actionCtx.Attack1Request = true;
+    }
+
+    public void RequestAttack2()
+    {
+        _actionCtx.Attack2Request = true;
     }
 
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
