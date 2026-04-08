@@ -19,6 +19,8 @@ public class PlayerInput : IPlayerInput
     private readonly InputAction _attack1Action;
     private readonly InputAction _attack2Action;
 
+    public bool BlockMovementInput { get; set; }
+
     public event Action<Vector2> OnMove;
     public event Action<Vector2> OnLook;
     public event Action<bool> OnSprint;
@@ -76,6 +78,11 @@ public class PlayerInput : IPlayerInput
 
     private void MovePerformed(InputAction.CallbackContext ctx)
     {
+        if (BlockMovementInput)
+        {
+            OnMove?.Invoke(Vector2.zero);
+            return;
+        }
         OnMove?.Invoke(ctx.ReadValue<Vector2>());
     }
     private void MoveCanceled(InputAction.CallbackContext ctx)

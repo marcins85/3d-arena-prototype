@@ -14,7 +14,8 @@ public class PlayerMovement : IMovement
     private bool _sprintTrigger;
 
     public float CurrentVerticalVelocity => _currentMovement.y;
-    public bool CanMove { get; set; } = true;
+    public MovementState State { get; set; } = MovementState.Normal;
+    public bool CanMove { get; set; }
 
     public PlayerMovement(CharacterController characterController, Transform transform, Transform camRoot, LayerMask groundMask, PlayerConfigSO config)
     {
@@ -23,6 +24,8 @@ public class PlayerMovement : IMovement
         _camRoot = camRoot;
         _groundMask = groundMask;
         _config = config;
+
+        CanMove = State == MovementState.Normal;
     }
 
     // WSAD podąża za playerem
@@ -87,11 +90,12 @@ public class PlayerMovement : IMovement
     {
         if (!_characterController) return;
 
+        _currentMovement.y = verticalVelocity;
+
         if (!CanMove)
         {
             _currentMovement.x = 0;
             _currentMovement.z = 0;
-            _currentMovement.y = verticalVelocity;
 
             _characterController.Move(_currentMovement * Time.deltaTime);
             return;

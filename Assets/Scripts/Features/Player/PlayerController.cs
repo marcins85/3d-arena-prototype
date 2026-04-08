@@ -107,12 +107,18 @@ public class PlayerController : MonoBehaviour
     {
         if (!pressed) return;
 
+        _movement.State = MovementState.Locked;
+        _input.BlockMovementInput = true;
+
         _animation.RequestAttack1();
     }
 
     private void OnAttack2(bool pressed)
     {
         if (!pressed) return;
+
+        _movement.State = MovementState.Locked;
+        _input.BlockMovementInput = true;
 
         _animation.RequestAttack2();
     }
@@ -144,6 +150,8 @@ public class PlayerController : MonoBehaviour
 
     public void OnAttackFinished()
     {
+        _movement.State = MovementState.Normal;
+        _input.BlockMovementInput = false;
         _animation.OnAttackFinished();
     }
 
