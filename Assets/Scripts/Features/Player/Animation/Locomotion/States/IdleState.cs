@@ -55,8 +55,8 @@ public class IdleState : IState
         if (_actx.Attack1Request || _actx.Attack2Request)
         {
             _asm.SetState(_asm.Attack);
-            if (_actx.Attack1Request) _actx.Attack1Request = false;
-            if (_actx.Attack2Request) _actx.Attack2Request = false;
+            // if (_actx.Attack1Request) _actx.Attack1Request = false;
+            // if (_actx.Attack2Request) _actx.Attack2Request = false;
             return;
         }
 

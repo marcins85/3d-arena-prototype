@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 public class GameBootstrappper : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
+
     public void Awake()
     {
         var config = _player.GetPlayerConfigSO();

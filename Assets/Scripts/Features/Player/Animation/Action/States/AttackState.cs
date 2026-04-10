@@ -13,15 +13,7 @@ public class AttackState : IState
 
     public void Enter()
     {
-        if (_ctx.Attack1Request)
-        {
-            _ctx.Animator.SetTrigger("Attack1");
-        }
-
-        if (_ctx.Attack2Request)
-        {
-            _ctx.Animator.SetTrigger("Attack2");
-        }
+        SetAttack();
     }
 
     public void Exit()
@@ -38,5 +30,21 @@ public class AttackState : IState
 
     public void Update()
     {
+        SetAttack();
+    }
+
+    private void SetAttack()
+    {
+        if (_ctx.Attack1Request)
+        {
+            _ctx.Animator.SetTrigger("Attack1");
+            _ctx.Attack1Request = false;
+        }
+
+        if (_ctx.Attack2Request)
+        {
+            _ctx.Animator.SetTrigger("Attack2");
+            _ctx.Attack2Request = false;
+        }
     }
 }
