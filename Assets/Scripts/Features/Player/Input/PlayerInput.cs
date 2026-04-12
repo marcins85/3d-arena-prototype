@@ -78,11 +78,11 @@ public class PlayerInput : IPlayerInput
 
     private void MovePerformed(InputAction.CallbackContext ctx)
     {
-        if (BlockMovementInput)
-        {
-            OnMove?.Invoke(Vector2.zero);
-            return;
-        }
+        //if (BlockMovementInput)
+        //{
+        //    OnMove?.Invoke(Vector2.zero);
+        //    return;
+        //}
         OnMove?.Invoke(ctx.ReadValue<Vector2>());
     }
     private void MoveCanceled(InputAction.CallbackContext ctx)

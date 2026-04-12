@@ -16,12 +16,13 @@ public class GameBootstrappper : MonoBehaviour
         var mask = _player.GetLayerMask();
 
         IPlayerInput input = new PlayerInput(asset);
+        IInputBuffer inputBuffer = new InputBufferSystem();
         IMovement movement = new PlayerMovement(cc, _player.transform, camRoot, mask, config);
         IRotation rotation = new PlayerRotation(camRoot, camPitch, _player.transform, config);
         IJump jump = new PlayerJump(config);
         IAnimationSystem animation = new AnimationSystem(config, movement, animator, jump, rotation);
         ITurnHandler turnHandler = rotation as ITurnHandler;
 
-        _player.Inject(movement, rotation, jump, turnHandler, input, animation);
+        _player.Inject(movement, rotation, jump, turnHandler, input, inputBuffer, animation);
     }
 }

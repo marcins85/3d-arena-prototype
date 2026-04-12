@@ -30,7 +30,7 @@ public class AttackState : IState
 
     public void Update()
     {
-        SetAttack();
+        //SetAttack();
     }
 
     private void SetAttack()

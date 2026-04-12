@@ -15,7 +15,8 @@ public class PlayerMovement : IMovement
 
     public float CurrentVerticalVelocity => _currentMovement.y;
     public MovementState State { get; set; } = MovementState.Normal;
-    public bool CanMove { get; set; }
+    public bool CanMove => State == MovementState.Normal;
+
 
     public PlayerMovement(CharacterController characterController, Transform transform, Transform camRoot, LayerMask groundMask, PlayerConfigSO config)
     {
@@ -24,8 +25,6 @@ public class PlayerMovement : IMovement
         _camRoot = camRoot;
         _groundMask = groundMask;
         _config = config;
-
-        CanMove = State == MovementState.Normal;
     }
 
     // WSAD podąża za playerem
@@ -94,38 +93,41 @@ public class PlayerMovement : IMovement
 
         if (!CanMove)
         {
+            _moveInput = Vector2.zero;
             _currentMovement.x = 0;
             _currentMovement.z = 0;
 
             _characterController.Move(_currentMovement * Time.deltaTime);
             return;
-        }
-
-
-        if (IsGroundedRaycast())
-        {
-
-            float moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
-
-            Vector3 worldDirection = CalculateWorldDirection();
-            _currentMovement.x = worldDirection.x * moveSpeed;
-            _currentMovement.z = worldDirection.z * moveSpeed;
-            _airMovement = new Vector3(_currentMovement.x, 0f, _currentMovement.z);
-        }
+        } 
         else
         {
-            _currentMovement.x = _airMovement.x;
-            _currentMovement.z = _airMovement.z;
+            if (IsGroundedRaycast())
+            {
+
+                float moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
+
+                Vector3 worldDirection = CalculateWorldDirection();
+                _currentMovement.x = worldDirection.x * moveSpeed;
+                _currentMovement.z = worldDirection.z * moveSpeed;
+                _airMovement = new Vector3(_currentMovement.x, 0f, _currentMovement.z);
+            }
+            else
+            {
+                _currentMovement.x = _airMovement.x;
+                _currentMovement.z = _airMovement.z;
+            }
+
+            _currentMovement.y = verticalVelocity;
+
+            //_currentMovement = Vector3.Lerp(
+            //    _currentMovement,
+            //    targetMovement,
+            //    _config.acceleration * Time.deltaTime
+            //);
+
+            _characterController.Move(_currentMovement * Time.deltaTime);
         }
 
-        _currentMovement.y = verticalVelocity;
-
-        //_currentMovement = Vector3.Lerp(
-        //    _currentMovement,
-        //    targetMovement,
-        //    _config.acceleration * Time.deltaTime
-        //);
-
-        _characterController.Move(_currentMovement * Time.deltaTime);
     }
 }

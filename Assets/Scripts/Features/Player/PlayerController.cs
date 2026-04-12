@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _groundMask;
 
     private IPlayerInput _input;
+    private IInputBuffer _inputBuffer;
     private IMovement _movement;
     private IRotation _rotation;
     private IJump _jump;
@@ -23,12 +24,13 @@ public class PlayerController : MonoBehaviour
     private bool _jumpRequest = false;
     private Vector2 _moveInput;
 
-    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IAnimationSystem animation)
+    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IInputBuffer inputBuffer, IAnimationSystem animation)
     {
         _movement = movement;
         _rotation = rotation;
         _jump = jump;
         _input = input;
+        _inputBuffer = inputBuffer;
         _animation = animation;
     }
 
@@ -77,8 +79,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnMove(Vector2 velocity)
     {
-        _moveInput = velocity;
+        if (!_movement.CanMove)
+        {
+            _inputBuffer.BufferMove(velocity);
+            return;
+        }
 
+        ApplyMove(velocity);
+        _inputBuffer.ClearMove();
+    }
+
+    private void ApplyMove(Vector2 velocity)
+    {
+        _moveInput = velocity;
         _movement.SetMoveInput(velocity);
         _rotation.SetMoveInput(velocity);
     }
@@ -110,6 +123,10 @@ public class PlayerController : MonoBehaviour
         _movement.State = MovementState.Locked;
         _input.BlockMovementInput = true;
 
+        ApplyMove(Vector2.zero);
+        _inputBuffer.ClearMove();
+
+
         _animation.RequestAttack1();
     }
 
@@ -119,6 +136,10 @@ public class PlayerController : MonoBehaviour
 
         _movement.State = MovementState.Locked;
         _input.BlockMovementInput = true;
+
+        ApplyMove(Vector2.zero);
+        _inputBuffer.ClearMove();
+
 
         _animation.RequestAttack2();
     }
@@ -153,6 +174,11 @@ public class PlayerController : MonoBehaviour
         _movement.State = MovementState.Normal;
         _input.BlockMovementInput = false;
         _animation.OnAttackFinished();
+
+        if (_inputBuffer.TryConsumeMove(out var bufferedMove))
+        {
+            ApplyMove(bufferedMove);
+        }
     }
 
     public PlayerConfigSO GetPlayerConfigSO() => _config;

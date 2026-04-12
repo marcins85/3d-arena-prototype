@@ -19,7 +19,8 @@ public class TurnState : IState
 
     public void Enter()
     {
-        _ctx.Movement.CanMove = false;
+        //_ctx.Movement.CanMove = false;
+        _ctx.Movement.State = MovementState.Locked;
         _ctx.Rotation.IsTurning = true;
         _ctx.Animator.SetTrigger(_right ? "TurnRight" : "TurnLeft");
     }
@@ -34,7 +35,8 @@ public class TurnState : IState
         {
             _ctx.Rotation.IsTurning = false;
             _ctx.Rotation.IsMoving = _ctx.Rotation.WantsToMove;
-            _ctx.Movement.CanMove = true;
+            //_ctx.Movement.CanMove = true;
+            _ctx.Movement.State = MovementState.Normal;
 
             if (_ctx.Rotation.IsMoving)
             {
