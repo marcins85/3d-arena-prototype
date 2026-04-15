@@ -13,21 +13,27 @@ public class BlockState : IState
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        _ctx.Animator.SetBool("IsBlocking", true);
+        _ctx.BlockRequest = false;
+
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        _ctx.Animator.SetBool("IsBlocking", false);
+        _ctx.BlockHeld = false;
     }
 
     public void OnAnimationEvent(string evt)
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
+        if (!_ctx.BlockHeld)
+        {
+            _sm.SetState(_sm.AIdle);
+        }
     }
 }

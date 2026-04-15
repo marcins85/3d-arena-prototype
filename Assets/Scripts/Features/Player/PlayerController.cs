@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
         _input.OnJump += OnJump;
         _input.OnAttack1 += OnAttack1;
         _input.OnAttack2 += OnAttack2;
+        _input.OnBlock += OnBlock;
     }
     private void OnDisable()
     {
@@ -73,6 +74,7 @@ public class PlayerController : MonoBehaviour
         _input.OnJump -= OnJump;
         _input.OnAttack1 -= OnAttack1;
         _input.OnAttack2 -= OnAttack2;
+        _input.OnBlock -= OnBlock;
 
         _input.Disable();
     }
@@ -144,6 +146,21 @@ public class PlayerController : MonoBehaviour
         _animation.RequestAttack2();
     }
 
+    private void OnBlock(bool pressed)
+    {
+        Debug.Log("pressed: " + pressed);
+        if (pressed)
+        {
+            _animation.RequestBlock();
+            _animation.SetBlockHeld(true);
+        }
+        else
+        {
+            _animation.SetBlockHeld(false);
+        }
+
+    }
+
     public void OnJumpTakeOff()
     {
         _animation.OnJumpTakeOff();
@@ -177,6 +194,11 @@ public class PlayerController : MonoBehaviour
     public void OnAttackComboTransition()
     {
         _animation.ComboTransition();
+    }
+
+    public void OnBlockWindowClosed()
+    {
+        _animation.BlockWindowClosed();
     }
 
     public void OnAttackFinished()

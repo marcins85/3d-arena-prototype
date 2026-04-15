@@ -13,6 +13,10 @@ public class AttackState : IState
 
     public void Enter()
     {
+        _ctx.DefenceWindowOpen = true;
+        _ctx.BlockHeld = false;
+        _ctx.BlockRequest = false;
+
         if (_ctx.Attack2Request)
         {
             _ctx.Animator.SetTrigger("Attack2");
@@ -31,10 +35,23 @@ public class AttackState : IState
 
     public void Update()
     {
+        if (_ctx.DefenceWindowOpen && _ctx.BlockRequest)
+        {
+            _ctx.DefenceWindowOpen = false;
+            _ctx.BlockRequest = false;
+
+            _sm.SetState(_sm.Block);
+            return;
+        }
     }
 
     public void OnAnimationEvent(string evt)
     {
+        if (evt == "BlockWindowClosed")
+        {
+            _ctx.DefenceWindowOpen = false;
+        }
+
         if (evt == "ComboWindowOpen")
         {
             if (_ctx.Attack1Request)

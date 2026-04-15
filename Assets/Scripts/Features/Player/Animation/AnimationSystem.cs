@@ -85,6 +85,21 @@ public class AnimationSystem : IAnimationSystem
         _actionCtx.Attack2Request = true;
     }
 
+    public void RequestBlock()
+    {
+        _actionCtx.BlockRequest = true;
+    }
+
+    public void SetBlockHeld(bool held)
+    {
+        _actionCtx.BlockHeld = held;
+    }
+
+    public void BlockWindowClosed()
+    {
+        _action.HandleAnimationEvent("BlockWindowClosed");
+    }
+
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
         _locomotionCtx.Velocity = velocity;

@@ -59,6 +59,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Block",
+                    "type": "Button",
+                    "id": "2f72cb50-61fb-4163-8cad-2b620bcef6b5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -165,10 +174,21 @@
                     "name": "",
                     "id": "69002e72-6864-465c-b066-98b059d76729",
                     "path": "<Mouse>/rightButton",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
                     "action": "Attack2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29a81940-7c43-4ae9-9213-87a28c436748",
+                    "path": "<Mouse>/middleButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Block",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

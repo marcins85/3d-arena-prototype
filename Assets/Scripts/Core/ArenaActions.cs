@@ -145,6 +145,15 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Block"",
+                    ""type"": ""Button"",
+                    ""id"": ""2f72cb50-61fb-4163-8cad-2b620bcef6b5"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -251,10 +260,21 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""69002e72-6864-465c-b066-98b059d76729"",
                     ""path"": ""<Mouse>/rightButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""29a81940-7c43-4ae9-9213-87a28c436748"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -271,6 +291,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         m_Main_Sprint = m_Main.FindAction("Sprint", throwIfNotFound: true);
         m_Main_Attack1 = m_Main.FindAction("Attack1", throwIfNotFound: true);
         m_Main_Attack2 = m_Main.FindAction("Attack2", throwIfNotFound: true);
+        m_Main_Block = m_Main.FindAction("Block", throwIfNotFound: true);
     }
 
     ~@ArenaActions()
@@ -357,6 +378,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Sprint;
     private readonly InputAction m_Main_Attack1;
     private readonly InputAction m_Main_Attack2;
+    private readonly InputAction m_Main_Block;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -392,6 +414,10 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Main/Attack2".
         /// </summary>
         public InputAction @Attack2 => m_Wrapper.m_Main_Attack2;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Block".
+        /// </summary>
+        public InputAction @Block => m_Wrapper.m_Main_Block;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -436,6 +462,9 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Attack2.started += instance.OnAttack2;
             @Attack2.performed += instance.OnAttack2;
             @Attack2.canceled += instance.OnAttack2;
+            @Block.started += instance.OnBlock;
+            @Block.performed += instance.OnBlock;
+            @Block.canceled += instance.OnBlock;
         }
 
         /// <summary>
@@ -465,6 +494,9 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Attack2.started -= instance.OnAttack2;
             @Attack2.performed -= instance.OnAttack2;
             @Attack2.canceled -= instance.OnAttack2;
+            @Block.started -= instance.OnBlock;
+            @Block.performed -= instance.OnBlock;
+            @Block.canceled -= instance.OnBlock;
         }
 
         /// <summary>
@@ -547,5 +579,12 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnAttack2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Block" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnBlock(InputAction.CallbackContext context);
     }
 }

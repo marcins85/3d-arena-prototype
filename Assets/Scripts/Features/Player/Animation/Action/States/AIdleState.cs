@@ -11,6 +11,14 @@ public class AIdleState : IState
 
     public void Enter() { }
     public void Exit() { }
-    public void Update() { }
+    public void Update() 
+    {
+        if (_ctx.BlockRequest)
+        {
+            _ctx.BlockRequest = false;
+            _sm.SetState(_sm.Block);
+            return;
+        }
+    }
     public void OnAnimationEvent(string evt) { }
 }

@@ -11,6 +11,7 @@ public class PlayerInput : IPlayerInput
     private readonly string _jumpName = "Jump";
     private readonly string _attack1Name = "Attack1";
     private readonly string _attack2Name = "Attack2";
+    private readonly string _blockName = "Block";
 
     private readonly InputAction _moveAction;
     private readonly InputAction _lookAction;
@@ -18,6 +19,7 @@ public class PlayerInput : IPlayerInput
     private readonly InputAction _jumpAction;
     private readonly InputAction _attack1Action;
     private readonly InputAction _attack2Action;
+    private readonly InputAction _blockAction;
 
     public bool BlockMovementInput { get; set; }
 
@@ -27,6 +29,7 @@ public class PlayerInput : IPlayerInput
     public event Action<bool> OnJump;
     public event Action<bool> OnAttack1;
     public event Action<bool> OnAttack2;
+    public event Action<bool> OnBlock;
 
     public PlayerInput(InputActionAsset asset)
     {
@@ -37,6 +40,7 @@ public class PlayerInput : IPlayerInput
         _jumpAction = map.FindAction(_jumpName);
         _attack1Action = map.FindAction(_attack1Name);
         _attack2Action = map.FindAction(_attack2Name);
+        _blockAction = map.FindAction(_blockName);
 
         _moveAction.performed += MovePerformed;
         _moveAction.canceled += MoveCanceled;
@@ -55,6 +59,9 @@ public class PlayerInput : IPlayerInput
 
         _attack2Action.performed += Attack2Performed;
         _attack2Action.canceled += Attack2Canceled;
+
+        _blockAction.performed += BlockPerformed;
+        _blockAction.canceled += BlockCanceled;
     }
 
     public void Enable()
@@ -65,6 +72,7 @@ public class PlayerInput : IPlayerInput
         _jumpAction.Enable();
         _attack1Action.Enable();
         _attack2Action.Enable();
+        _blockAction.Enable();
     }
     public void Disable()
     {
@@ -74,6 +82,7 @@ public class PlayerInput : IPlayerInput
         _jumpAction.Disable();
         _attack1Action.Disable();
         _attack2Action.Disable();
+        _blockAction.Disable();
     }
 
     private void MovePerformed(InputAction.CallbackContext ctx)
@@ -133,5 +142,14 @@ public class PlayerInput : IPlayerInput
     private void Attack2Canceled(InputAction.CallbackContext ctx)
     {
         OnAttack2?.Invoke(false);
+    }
+
+    private void BlockPerformed(InputAction.CallbackContext ctx)
+    {
+        OnBlock?.Invoke(true);
+    }
+    private void BlockCanceled(InputAction.CallbackContext ctx)
+    {
+        OnBlock?.Invoke(false);
     }
 }
