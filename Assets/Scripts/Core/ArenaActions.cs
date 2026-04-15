@@ -240,7 +240,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""b258872a-80ef-47a4-ab6f-267dbeabe863"",
                     ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Attack1"",

@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class AttackState : IState
 {
-    private ActionStateMachine _sm;
-    private ActionContext _ctx;
+    private readonly ActionStateMachine _sm;
+    private readonly ActionContext _ctx;
 
     public AttackState(ActionContext ctx, ActionStateMachine sm)
     {
@@ -13,38 +13,69 @@ public class AttackState : IState
 
     public void Enter()
     {
-        SetAttack();
+        if (_ctx.Attack2Request)
+        {
+            _ctx.Animator.SetTrigger("Attack2");
+            _ctx.Attack2Request = false;
+            return;
+        }
+
+        StartCombo();
     }
 
     public void Exit()
+    {
+        _ctx.ComboStep = 0;
+        _ctx.QueuedAttack = false;
+    }
+
+    public void Update()
     {
     }
 
     public void OnAnimationEvent(string evt)
     {
+        if (evt == "ComboWindowOpen")
+        {
+            if (_ctx.Attack1Request)
+            {
+                _ctx.QueuedAttack = true;
+                _ctx.Attack1Request = false;
+            }
+        }
+
+        if (evt == "ComboTransition")
+        {
+            if (_ctx.QueuedAttack)
+            {
+                _ctx.QueuedAttack = false;
+                ContinueCombo();
+            }
+        }
+
         if (evt == "OnAttackFinished")
         {
             _sm.SetState(_sm.AIdle);
         }
     }
 
-    public void Update()
+    private void StartCombo()
     {
-        //SetAttack();
+        _ctx.ComboStep = 1;
+        _ctx.Animator.SetInteger("ComboIndex", _ctx.ComboStep);
+        _ctx.Animator.SetTrigger("Attack1");
+
+        _ctx.Attack1Request = false;
     }
 
-    private void SetAttack()
+    private void ContinueCombo()
     {
-        if (_ctx.Attack1Request)
-        {
-            _ctx.Animator.SetTrigger("Attack1");
-            _ctx.Attack1Request = false;
-        }
+        _ctx.ComboStep++;
 
-        if (_ctx.Attack2Request)
-        {
-            _ctx.Animator.SetTrigger("Attack2");
-            _ctx.Attack2Request = false;
-        }
+        if (_ctx.ComboStep > 3)
+            _ctx.ComboStep = 0;
+
+        _ctx.Animator.SetInteger("ComboIndex", _ctx.ComboStep);
+        _ctx.Animator.SetTrigger("Attack1");
     }
 }

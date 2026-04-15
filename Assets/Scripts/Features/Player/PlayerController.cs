@@ -169,6 +169,16 @@ public class PlayerController : MonoBehaviour
         _animation.OnTurnRightFinished();
     }
 
+    public void OnAttackComboWindowOpen()
+    {
+        _animation.ComboWindowOpen();
+    }
+
+    public void OnAttackComboTransition()
+    {
+        _animation.ComboTransition();
+    }
+
     public void OnAttackFinished()
     {
         _movement.State = MovementState.Normal;

@@ -11,5 +11,7 @@ public interface IAnimationSystem
     public void OnJumpFinished();
     public void OnTurnLeftFinished();
     public void OnTurnRightFinished();
+    public void ComboWindowOpen();
+    public void ComboTransition();
     public void OnAttackFinished();
 }

@@ -55,14 +55,24 @@ public class AnimationSystem : IAnimationSystem
         _locomotion.HandleAnimationEvent("OnTurnRightFinished");
     }
 
+    public void SetSprint(bool sprint)
+    {
+        _locomotionCtx.Animator.SetBool("Sprint", sprint);
+    }
+
     public void OnAttackFinished()
     {
         _action.HandleAnimationEvent("OnAttackFinished");
     }
 
-    public void SetSprint(bool sprint)
+    public void ComboWindowOpen()
     {
-        _locomotionCtx.Animator.SetBool("Sprint", sprint);
+        _action.HandleAnimationEvent("ComboWindowOpen");
+    }
+
+    public void ComboTransition()
+    {
+        _action.HandleAnimationEvent("ComboTransition");
     }
 
     public void RequestAttack1()
