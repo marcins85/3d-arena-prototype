@@ -148,14 +148,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnBlock(bool pressed)
     {
-        Debug.Log("pressed: " + pressed);
         if (pressed)
         {
+            _movement.State = MovementState.Locked;
+            _input.BlockMovementInput = true;
+            ApplyMove(Vector2.zero);
+
             _animation.RequestBlock();
             _animation.SetBlockHeld(true);
         }
         else
         {
+            _movement.State = MovementState.Normal;
+            _input.BlockMovementInput = false;
             _animation.SetBlockHeld(false);
         }
 
