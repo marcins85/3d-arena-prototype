@@ -58,6 +58,8 @@ public class AttackState : IState
             {
                 _ctx.QueuedAttack = true;
                 _ctx.Attack1Request = false;
+                _ctx.DefenceWindowOpen = true;
+
             }
         }
 

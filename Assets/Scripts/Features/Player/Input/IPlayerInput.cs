@@ -10,7 +10,7 @@ public interface IPlayerInput
     public event Action<bool> OnAttack1;
     public event Action<bool> OnAttack2;
     public event Action<bool> OnBlock;
-    public bool BlockMovementInput { get; set; }
+    //public bool BlockMovementInput { get; set; }
 
     public void Enable();
     public void Disable();

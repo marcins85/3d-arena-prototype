@@ -259,7 +259,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""69002e72-6864-465c-b066-98b059d76729"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
@@ -270,7 +270,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""29a81940-7c43-4ae9-9213-87a28c436748"",
-                    ""path"": ""<Mouse>/middleButton"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

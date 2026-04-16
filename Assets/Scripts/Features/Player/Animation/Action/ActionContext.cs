@@ -3,6 +3,7 @@ using UnityEngine;
 public class ActionContext
 {
     public Animator Animator;
+    public IMovement Movement;
     public bool Attack1Request;
     public bool Attack2Request;
     public bool BlockRequest;

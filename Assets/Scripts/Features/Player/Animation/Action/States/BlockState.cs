@@ -15,6 +15,7 @@ public class BlockState : IState
     {
         _ctx.Animator.SetBool("IsBlocking", true);
         _ctx.BlockRequest = false;
+        _ctx.Movement.State = MovementState.Locked;
 
     }
 
@@ -22,6 +23,7 @@ public class BlockState : IState
     {
         _ctx.Animator.SetBool("IsBlocking", false);
         _ctx.BlockHeld = false;
+        _ctx.Movement.State = MovementState.Normal;
     }
 
     public void OnAnimationEvent(string evt)

@@ -123,7 +123,6 @@ public class PlayerController : MonoBehaviour
         if (!pressed) return;
 
         _movement.State = MovementState.Locked;
-        _input.BlockMovementInput = true;
 
         ApplyMove(Vector2.zero);
         _inputBuffer.ClearMove();
@@ -137,7 +136,6 @@ public class PlayerController : MonoBehaviour
         if (!pressed) return;
 
         _movement.State = MovementState.Locked;
-        _input.BlockMovementInput = true;
 
         ApplyMove(Vector2.zero);
         _inputBuffer.ClearMove();
@@ -150,17 +148,11 @@ public class PlayerController : MonoBehaviour
     {
         if (pressed)
         {
-            _movement.State = MovementState.Locked;
-            _input.BlockMovementInput = true;
-            ApplyMove(Vector2.zero);
-
             _animation.RequestBlock();
             _animation.SetBlockHeld(true);
         }
         else
         {
-            _movement.State = MovementState.Normal;
-            _input.BlockMovementInput = false;
             _animation.SetBlockHeld(false);
         }
 
@@ -183,12 +175,24 @@ public class PlayerController : MonoBehaviour
 
     public void OnTurnLeftFinished()
     {
+        _movement.State = MovementState.Normal;
         _animation.OnTurnLeftFinished();
+
+        if (_inputBuffer.TryConsumeMove(out var bufferedMove))
+        {
+            ApplyMove(bufferedMove);
+        }
     }
 
     public void OnTurnRightFinished()
     {
+        _movement.State = MovementState.Normal;
         _animation.OnTurnRightFinished();
+
+        if (_inputBuffer.TryConsumeMove(out var bufferedMove))
+        {
+            ApplyMove(bufferedMove);
+        }
     }
 
     public void OnAttackComboWindowOpen()
@@ -209,7 +213,6 @@ public class PlayerController : MonoBehaviour
     public void OnAttackFinished()
     {
         _movement.State = MovementState.Normal;
-        _input.BlockMovementInput = false;
         _animation.OnAttackFinished();
 
         if (_inputBuffer.TryConsumeMove(out var bufferedMove))

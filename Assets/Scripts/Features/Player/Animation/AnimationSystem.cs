@@ -21,7 +21,8 @@ public class AnimationSystem : IAnimationSystem
 
         _actionCtx = new ActionContext
         {
-            Animator = animator
+            Animator = animator,
+            Movement = movement
         };
 
         _action = new ActionStateMachine(_actionCtx);

@@ -21,7 +21,7 @@ public class PlayerInput : IPlayerInput
     private readonly InputAction _attack2Action;
     private readonly InputAction _blockAction;
 
-    public bool BlockMovementInput { get; set; }
+    //public bool BlockMovementInput { get; set; }
 
     public event Action<Vector2> OnMove;
     public event Action<Vector2> OnLook;

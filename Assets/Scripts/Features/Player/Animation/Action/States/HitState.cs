@@ -13,12 +13,13 @@ public class HitState : IState
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        _ctx.Animator.SetTrigger("Hit");
+        _ctx.Movement.State = MovementState.Locked;
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        _ctx.Movement.State = MovementState.Normal;
     }
 
     public void OnAnimationEvent(string evt)
