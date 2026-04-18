@@ -27,7 +27,6 @@ public class HitState : IState
     {
         if (evt == "OnAnimationFinished")
         {
-            Debug.Log("finished");
             _ctx.Movement.State = MovementState.Normal;
             _sm.SetState(_sm.AIdle);
         }
