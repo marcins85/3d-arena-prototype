@@ -221,6 +221,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnAnimationFinished()
+    {
+        _animation.OnAnimationFinished();
+
+        if (_inputBuffer.TryConsumeMove(out var bufferedMove))
+        {
+            ApplyMove(bufferedMove);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other != null && other.CompareTag("Enemy"))
+        {
+            _animation.RequestHit();
+        }
+    }
+
     public PlayerConfigSO GetPlayerConfigSO() => _config;
     public CharacterController GetCharacterController() => _characterController;
     public InputActionAsset GetInputActionAsset() => _asset;

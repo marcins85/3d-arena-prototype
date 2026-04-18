@@ -7,6 +7,7 @@ public interface IAnimationSystem
     public void RequestAttack1();
     public void RequestAttack2();
     public void RequestBlock();
+    public void RequestHit();
     public void SetBlockHeld(bool held);
     public void OnJumpTakeOff();
     public void OnJumpLanding();
@@ -16,5 +17,6 @@ public interface IAnimationSystem
     public void ComboWindowOpen();
     public void ComboTransition();
     public void OnAttackFinished();
+    public void OnAnimationFinished();
     public void BlockWindowClosed();
 }

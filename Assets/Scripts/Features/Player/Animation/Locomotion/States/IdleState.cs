@@ -59,6 +59,13 @@ public class IdleState : IState
             return;
         }
 
+        if (_actx.HitRequest)
+        {
+            _asm.SetState(_asm.Hit);
+            _actx.HitRequest = false;
+            return;
+        }
+
         if (_ctx.Velocity.sqrMagnitude > 0.01f)
         {
             _sm.SetState(_sm.Move);

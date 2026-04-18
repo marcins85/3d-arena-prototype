@@ -154,6 +154,15 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hit"",
+                    ""type"": ""Button"",
+                    ""id"": ""b8400283-0d4d-4089-b883-ea91b386228e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -277,6 +286,17 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
                     ""action"": ""Block"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d324fccb-66ed-444a-aef5-3eb354e616f4"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -292,6 +312,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         m_Main_Attack1 = m_Main.FindAction("Attack1", throwIfNotFound: true);
         m_Main_Attack2 = m_Main.FindAction("Attack2", throwIfNotFound: true);
         m_Main_Block = m_Main.FindAction("Block", throwIfNotFound: true);
+        m_Main_Hit = m_Main.FindAction("Hit", throwIfNotFound: true);
     }
 
     ~@ArenaActions()
@@ -379,6 +400,7 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Main_Attack1;
     private readonly InputAction m_Main_Attack2;
     private readonly InputAction m_Main_Block;
+    private readonly InputAction m_Main_Hit;
     /// <summary>
     /// Provides access to input actions defined in input action map "Main".
     /// </summary>
@@ -418,6 +440,10 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Main/Block".
         /// </summary>
         public InputAction @Block => m_Wrapper.m_Main_Block;
+        /// <summary>
+        /// Provides access to the underlying input action "Main/Hit".
+        /// </summary>
+        public InputAction @Hit => m_Wrapper.m_Main_Hit;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -465,6 +491,9 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Block.started += instance.OnBlock;
             @Block.performed += instance.OnBlock;
             @Block.canceled += instance.OnBlock;
+            @Hit.started += instance.OnHit;
+            @Hit.performed += instance.OnHit;
+            @Hit.canceled += instance.OnHit;
         }
 
         /// <summary>
@@ -497,6 +526,9 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
             @Block.started -= instance.OnBlock;
             @Block.performed -= instance.OnBlock;
             @Block.canceled -= instance.OnBlock;
+            @Hit.started -= instance.OnHit;
+            @Hit.performed -= instance.OnHit;
+            @Hit.canceled -= instance.OnHit;
         }
 
         /// <summary>
@@ -586,5 +618,12 @@ public partial class @ArenaActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnBlock(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Hit" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnHit(InputAction.CallbackContext context);
     }
 }

@@ -66,6 +66,11 @@ public class AnimationSystem : IAnimationSystem
         _action.HandleAnimationEvent("OnAttackFinished");
     }
 
+    public void OnAnimationFinished()
+    {
+        _action.HandleAnimationEvent("OnAnimationFinished");
+    }
+
     public void ComboWindowOpen()
     {
         _action.HandleAnimationEvent("ComboWindowOpen");
@@ -86,6 +91,11 @@ public class AnimationSystem : IAnimationSystem
         _actionCtx.Attack2Request = true;
     }
 
+    public void RequestHit()
+    {
+        _actionCtx.HitRequest = true;
+    }
+
     public void RequestBlock()
     {
         _actionCtx.BlockRequest = true;
@@ -103,6 +113,13 @@ public class AnimationSystem : IAnimationSystem
 
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
+        if (_actionCtx.HitRequest)
+        {
+            _actionCtx.HitRequest = false;
+            _action.SetState(_action.Hit);
+            return;
+        }
+
         _locomotionCtx.Velocity = velocity;
         _locomotionCtx.IsGrounded = isGrounded;
         _locomotionCtx.VerticalVelocity = verticalVelocity;

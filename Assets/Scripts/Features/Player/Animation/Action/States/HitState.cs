@@ -15,20 +15,25 @@ public class HitState : IState
     {
         _ctx.Animator.SetTrigger("Hit");
         _ctx.Movement.State = MovementState.Locked;
+        _ctx.HitRequest = false;
     }
 
     public void Exit()
     {
-        _ctx.Movement.State = MovementState.Normal;
+        
     }
 
     public void OnAnimationEvent(string evt)
     {
-        throw new System.NotImplementedException();
+        if (evt == "OnAnimationFinished")
+        {
+            Debug.Log("finished");
+            _ctx.Movement.State = MovementState.Normal;
+            _sm.SetState(_sm.AIdle);
+        }
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
     }
 }

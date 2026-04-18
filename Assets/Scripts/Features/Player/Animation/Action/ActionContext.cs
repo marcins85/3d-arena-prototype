@@ -6,6 +6,7 @@ public class ActionContext
     public IMovement Movement;
     public bool Attack1Request;
     public bool Attack2Request;
+    public bool HitRequest;
     public bool BlockRequest;
     public bool BlockHeld;
 
