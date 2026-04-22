@@ -22,7 +22,7 @@ public class AnimationSystem : IAnimationSystem
         _actionCtx = new ActionContext
         {
             Animator = animator,
-            Movement = movement
+            Movement = movement,
         };
 
         _action = new ActionStateMachine(_actionCtx);

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour
     private IRotation _rotation;
     private IJump _jump;
     private IAnimationSystem _animation;
+    private IDamage _damage;
 
     private bool _jumpRequest = false;
     private Vector2 _moveInput;

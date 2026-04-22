@@ -16,6 +16,13 @@ public class HitState : IState
         _ctx.Animator.SetTrigger("Hit");
         _ctx.Movement.State = MovementState.Locked;
         _ctx.HitRequest = false;
+
+        IDamage dmg = new NormalDamage(30);
+        dmg = new PoisonDamage(dmg, 5);
+        dmg = new DoubleDamage(dmg);
+
+        int finalDamage = dmg.GetDamage();
+        Debug.Log("Final damage: " + finalDamage);
     }
 
     public void Exit()
