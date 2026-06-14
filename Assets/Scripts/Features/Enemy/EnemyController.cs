@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
 public class EnemyController : MonoBehaviour
@@ -6,7 +7,32 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyConfigSO _config;
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Animator _animator;
-    [SerializeField] private LayerMask _groundMask;
-    [SerializeField] private Transform _target;
 
+    [SerializeField] private NavMeshAgent _agent;
+    [SerializeField] private Transform _player;
+    [SerializeField] private LayerMask _whatIsGround;
+    [SerializeField] private LayerMask _whatIsPlayer;
+
+    private EnemyAI _ai;
+
+    public void Inject(EnemyAI ai)
+    {
+        _ai = ai;
+    }
+
+    private void Update()
+    {
+        _ai.SetPlayerInSightRange(Physics.CheckSphere(transform.position, _ai.GetSightRange(), _ai.GetWhatIsPlayer()));
+        _ai.SetPlayerInAttackRange(Physics.CheckSphere(transform.position, _ai.GetAttackRange(), _ai.GetWhatIsPlayer()));
+
+        if (!_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Patroling();
+        if (_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Chasing();
+        if (_ai.GetPlayerInSightRange() && _ai.GetPlayerInAttackRange()) _ai.Attacking();
+    }
+
+    public EnemyConfigSO GetEnemyConfigSO() => _config;
+    public NavMeshAgent GetNavMeshAgent() => _agent;
+    public Transform GetPlayerTransform() => _player;
+    public LayerMask GetLayerMaskGround() => _whatIsGround;
+    public LayerMask GetLayerMaskPlayer() => _whatIsPlayer;
 }
