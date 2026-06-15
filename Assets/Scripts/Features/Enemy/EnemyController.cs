@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -27,7 +28,23 @@ public class EnemyController : MonoBehaviour
 
         if (!_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Patroling();
         if (_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Chasing();
-        if (_ai.GetPlayerInSightRange() && _ai.GetPlayerInAttackRange()) _ai.Attacking();
+        if (_ai.GetPlayerInSightRange() && _ai.GetPlayerInAttackRange())
+        {
+            _ai.Attacking();
+
+            if (_ai.TryAttack())
+            {
+                Debug.Log("Enemy attacking!");
+
+                StartCoroutine(ResetAttackCoroutine());
+            }
+        }
+    }
+
+    private IEnumerator ResetAttackCoroutine()
+    {
+        yield return new WaitForSeconds(_ai.GetTimeBetweenAttacks());
+        _ai.ResetAttack();
     }
 
     public EnemyConfigSO GetEnemyConfigSO() => _config;

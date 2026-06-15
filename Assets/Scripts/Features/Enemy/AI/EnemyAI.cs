@@ -15,11 +15,11 @@ public class EnemyAI
     private float _walkPointRange = 5f;
 
     // Attacking
-    private float _timeBetweenAttacks = 0.5f;
+    private float _timeBetweenAttacks = 2f;
     private bool _alreadyAttacked;
 
     // States
-    private float _sightRange = 20f, _attackRange = 12f;
+    private float _sightRange = 20f, _attackRange = 1f;
     private bool _playerInSightRange, _playerInAttackRange;
 
     public EnemyAI(NavMeshAgent agent, Transform player, Transform transform, LayerMask whatIsGround, LayerMask whatIsPlayer)
@@ -31,6 +31,11 @@ public class EnemyAI
         _whatIsPlayer = whatIsPlayer;
     }
 
+    public float GetTimeBetweenAttacks()
+    {
+        return _timeBetweenAttacks;
+    }
+
     public float GetSightRange()
     {
         return _sightRange;
@@ -40,7 +45,7 @@ public class EnemyAI
     {
         return _attackRange;
     }
-    
+
     public LayerMask GetWhatIsPlayer()
     {
         return _whatIsPlayer;
@@ -93,18 +98,18 @@ public class EnemyAI
         // set enemy to stop walking
         _agent.SetDestination(_transform.position);
         _transform.LookAt(_player);
-
-        if (!_alreadyAttacked)
-        {
-            // Attack code here
-            Debug.Log("Enemy attacking!");
-
-            _alreadyAttacked = true;
-            // Invoke(nameof(ResetAttack), _timeBetweenAttacks);
-        }
+        _transform.eulerAngles = new Vector3(0, _transform.eulerAngles.y, 0);
     }
 
-    private void ResetAttack()
+    public bool TryAttack()
+    {
+        if (_alreadyAttacked) return false;
+
+        _alreadyAttacked = true;
+        return true;
+    }
+
+    public void ResetAttack()
     {
         _alreadyAttacked = false;
     }
