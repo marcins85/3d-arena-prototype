@@ -14,11 +14,13 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private LayerMask _whatIsPlayer;
 
+    private IAnimationSystem _animation;
     private EnemyAI _ai;
 
-    public void Inject(EnemyAI ai)
+    public void Inject(EnemyAI ai, IAnimationSystem animation)
     {
         _ai = ai;
+        _animation = animation;
     }
 
     private void Update()
@@ -35,6 +37,7 @@ public class EnemyController : MonoBehaviour
             if (_ai.TryAttack())
             {
                 Debug.Log("Enemy attacking!");
+                _animation.RequestAttack2();
 
                 StartCoroutine(ResetAttackCoroutine());
             }

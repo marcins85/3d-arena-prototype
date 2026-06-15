@@ -10,4 +10,6 @@ public class LocomotionContext
     public float VerticalVelocity;
     public bool IsGrounded;
     public bool JumpRequest;
+    public bool WalkPointSet; //enemy
+    public bool TryAttack; //enemy
 }

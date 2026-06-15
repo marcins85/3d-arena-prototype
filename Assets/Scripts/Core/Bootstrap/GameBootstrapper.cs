@@ -33,6 +33,6 @@ public class GameBootstrappper : MonoBehaviour
         EnemyAI enemyAI = new EnemyAI(enemyAgent, enemyPlayerTransform, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);
 
         _player.Inject(movement, rotation, jump, turnHandler, input, inputBuffer, animation);
-        _enemy.Inject(enemyAI);
+        _enemy.Inject(enemyAI, animation);
     }
 }

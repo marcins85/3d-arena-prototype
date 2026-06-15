@@ -11,21 +11,22 @@ public class PatrolState : IState
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        _sm.SetState(_sm.Move);
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnAnimationEvent(string evt)
     {
-        throw new System.NotImplementedException();
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
+        if (!_ctx.WalkPointSet && !_ctx.TryAttack)
+        {
+            _sm.SetState(_sm.Chase);
+        }
     }
 }

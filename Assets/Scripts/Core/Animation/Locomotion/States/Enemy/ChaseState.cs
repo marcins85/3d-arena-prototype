@@ -2,30 +2,35 @@ public class ChaseState : IState
 {
     private LocomotionContext _ctx;
     private LocomotionStateMachine _sm;
+    private ActionContext _actx;
+    private ActionStateMachine _asm;
 
-    public ChaseState(LocomotionContext ctx, LocomotionStateMachine sm)
+    public ChaseState(LocomotionContext ctx, LocomotionStateMachine sm, ActionContext actx, ActionStateMachine asm)
     {
         _ctx = ctx;
         _sm = sm;
+        _actx = actx;
+        _asm = asm;
     }
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        _sm.SetState(_sm.Move);
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
     }
 
     public void OnAnimationEvent(string evt)
     {
-        throw new System.NotImplementedException();
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
+        if (!_ctx.WalkPointSet && _ctx.TryAttack)
+        {
+            _asm.SetState(_asm.Attack);
+        }   
     }
 }

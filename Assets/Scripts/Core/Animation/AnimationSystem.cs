@@ -111,6 +111,11 @@ public class AnimationSystem : IAnimationSystem
         _action.HandleAnimationEvent("BlockWindowClosed");
     }
 
+    public void SetWalkPointSet(bool value)
+    {
+        _locomotionCtx.WalkPointSet = value;
+    }
+
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
         if (_actionCtx.HitRequest)

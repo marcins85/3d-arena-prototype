@@ -36,6 +36,11 @@ public class EnemyAI
         return _timeBetweenAttacks;
     }
 
+    public bool GetWalkPointSet()
+    {
+        return _walkPointSet;
+    }
+
     public float GetSightRange()
     {
         return _sightRange;

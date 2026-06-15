@@ -4,6 +4,8 @@ public class LocomotionStateMachine : StateMachine
     public IState Move;
     public IState Jump;
     public TurnState Turn;
+    public IState Patrol;
+    public IState Chase;
 
     public LocomotionStateMachine(LocomotionContext ctx, ActionContext actx, ActionStateMachine asm)
     {
@@ -11,5 +13,7 @@ public class LocomotionStateMachine : StateMachine
         Move = new MoveState(ctx, this);
         Jump = new JumpState(ctx, this);
         Turn = new TurnState(ctx, this);
+        Patrol = new TurnState(ctx, this);
+        Chase = new TurnState(ctx, this);
     }
 }
