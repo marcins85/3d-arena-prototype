@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerMovement : IMovement
 {
-    private PlayerConfigSO _config;
+    private IEntityConfig _config;
     private CharacterController _characterController;
     private Vector3 _worldDirection;
     private Vector3 _currentMovement;
@@ -18,7 +18,7 @@ public class PlayerMovement : IMovement
     public bool CanMove => State == MovementState.Normal;
 
 
-    public PlayerMovement(CharacterController characterController, Transform transform, Transform camRoot, LayerMask groundMask, PlayerConfigSO config)
+    public PlayerMovement(CharacterController characterController, Transform transform, Transform camRoot, LayerMask groundMask, IEntityConfig config)
     {
         _characterController = characterController;
         _transform = transform;
@@ -105,7 +105,7 @@ public class PlayerMovement : IMovement
             if (IsGroundedRaycast())
             {
 
-                float moveSpeed = _config.walkSpeed * (_sprintTrigger ? _config.sprintMultiplier : 1);
+                float moveSpeed = _config.WalkSpeed * (_sprintTrigger ? _config.SprintMultiplier : 1);
 
                 Vector3 worldDirection = CalculateWorldDirection();
                 _currentMovement.x = worldDirection.x * moveSpeed;

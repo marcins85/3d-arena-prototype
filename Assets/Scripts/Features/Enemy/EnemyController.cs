@@ -55,4 +55,5 @@ public class EnemyController : MonoBehaviour
     public Transform GetPlayerTransform() => _player;
     public LayerMask GetLayerMaskGround() => _whatIsGround;
     public LayerMask GetLayerMaskPlayer() => _whatIsPlayer;
+    public Animator GetAnimator() => _animator;
 }

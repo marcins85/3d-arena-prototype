@@ -11,7 +11,7 @@ public class PatrolState : IState
 
     public void Enter()
     {
-        _sm.SetState(_sm.Move);
+        // _sm.SetState(_sm.Move);
     }
 
     public void Exit()

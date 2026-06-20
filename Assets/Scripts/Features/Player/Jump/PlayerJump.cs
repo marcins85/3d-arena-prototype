@@ -37,7 +37,7 @@ public class PlayerJump : IJump
 
             if (_jumpTrigger)
             {
-                _verticalVelocity = _config.jumpForce;
+                _verticalVelocity = _config.JumpForce;
                 _jumpTrigger = false;
                 CanJump = false;
             }
@@ -48,7 +48,7 @@ public class PlayerJump : IJump
         }
         else
         {
-            _verticalVelocity += Physics.gravity.y * _config.gravityMultiplier * Time.deltaTime;
+            _verticalVelocity += Physics.gravity.y * _config.GravityMultiplier * Time.deltaTime;
         }
     }
 }

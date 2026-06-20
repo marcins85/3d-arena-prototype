@@ -8,7 +8,8 @@ public class AnimationSystem : IAnimationSystem
     private readonly ActionStateMachine _action;
     private readonly ActionContext _actionCtx;
 
-    public AnimationSystem(PlayerConfigSO config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
+    // for player
+    public AnimationSystem(IEntityConfig config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
     {
         _locomotionCtx = new LocomotionContext
         {
@@ -27,7 +28,31 @@ public class AnimationSystem : IAnimationSystem
 
         _action = new ActionStateMachine(_actionCtx);
         _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
+        
         _locomotion.SetState(_locomotion.Idle);
+    }
+
+    // for enemy
+    public AnimationSystem(EnemyConfigSO config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
+    {
+        _locomotionCtx = new LocomotionContext
+        {
+            Config = config,
+            Movement = movement,
+            Rotation = rotation,
+            Jump = jump,
+            Animator = animator
+        };
+
+        _actionCtx = new ActionContext
+        {
+            Animator = animator,
+            Movement = movement,
+        };
+
+        _action = new ActionStateMachine(_actionCtx);
+        _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
+        _locomotion.SetState(_locomotion.Patrol);
 
     }
 
@@ -111,9 +136,16 @@ public class AnimationSystem : IAnimationSystem
         _action.HandleAnimationEvent("BlockWindowClosed");
     }
 
+    // enemy
     public void SetWalkPointSet(bool value)
     {
         _locomotionCtx.WalkPointSet = value;
+    }
+
+    // enemy
+    public void SetTryAttack(bool value)
+    {
+        _locomotionCtx.TryAttack = value;
     }
 
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)

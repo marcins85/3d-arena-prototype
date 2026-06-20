@@ -10,6 +10,7 @@ public interface IAnimationSystem
     public void RequestHit();
     public void SetBlockHeld(bool held);
     public void SetWalkPointSet(bool value);
+    public void SetTryAttack(bool value);
     public void OnJumpTakeOff();
     public void OnJumpLanding();
     public void OnJumpFinished();

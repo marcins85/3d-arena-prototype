@@ -1,7 +1,7 @@
 using UnityEngine;
 public class LocomotionContext
 {
-    public PlayerConfigSO Config;
+    public IEntityConfig Config;
     public IMovement Movement;
     public IRotation Rotation;
     public IJump Jump;

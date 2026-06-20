@@ -1,39 +1,28 @@
-using System;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMovement : IMovement
 {
-    private CharacterController _characterController;
-    private EnemyConfigSO _config;
-    private LayerMask _groundMask;
-    public float CurrentVerticalVelocity => throw new NotImplementedException();
-    public MovementState State { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public bool CanMove => throw new NotImplementedException();
+    private NavMeshAgent _agent;
+    private IEntityConfig _config;
 
-    public EnemyMovement(CharacterController characterController, EnemyConfigSO config, LayerMask groundMask)
+    public float CurrentVerticalVelocity => 0f; // NavMesh nie potrzebuje
+    public MovementState State { get; set; } = MovementState.Normal;
+    public bool CanMove => State == MovementState.Normal;
+
+    public EnemyMovement(NavMeshAgent agent, IEntityConfig config)
     {
-        _characterController = characterController;
+        _agent = agent;
         _config = config;
-        _groundMask = groundMask;
     }
+
+    public void SetMoveInput(Vector2 input) { } // Enemy nie używa input
+    public void SetSprintTrigger(bool trigger) { }
 
     public void HandleMovement(float verticalVelocity)
     {
-        throw new NotImplementedException();
+        // NavMeshAgent sam się porusza
     }
 
-    public bool IsGroundedRaycast()
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetMoveInput(Vector2 input)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void SetSprintTrigger(bool trigger)
-    {
-        throw new NotImplementedException();
-    }
+    public bool IsGroundedRaycast() => true; // NavMesh zawsze na ziemi
 }
