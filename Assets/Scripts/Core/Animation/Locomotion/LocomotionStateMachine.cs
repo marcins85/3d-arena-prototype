@@ -13,7 +13,7 @@ public class LocomotionStateMachine : StateMachine
         Move = new MoveState(ctx, this);
         Jump = new JumpState(ctx, this);
         Turn = new TurnState(ctx, this);
-        Patrol = new TurnState(ctx, this);
-        Chase = new TurnState(ctx, this);
+        Patrol = new PatrolState(ctx, this);
+        Chase = new ChaseState(ctx, this, actx, asm);
     }
 }

@@ -67,5 +67,5 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "3D Arena Prototype.slnx"
+    "dotnet.defaultSolution": "3d-arena-prototype.slnx"
 }

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class PatrolState : IState
 {
     private LocomotionContext _ctx;
@@ -12,6 +14,7 @@ public class PatrolState : IState
     public void Enter()
     {
         // _sm.SetState(_sm.Move);
+        Debug.Log("PatrolState Enter");
     }
 
     public void Exit()
@@ -24,8 +27,11 @@ public class PatrolState : IState
 
     public void Update()
     {
+        Debug.Log(_ctx.WalkPointSet);
+        Debug.Log(_ctx.TryAttack);
         if (!_ctx.WalkPointSet && !_ctx.TryAttack)
         {
+            Debug.Log("PatrolState Update set chase");
             _sm.SetState(_sm.Chase);
         }
     }

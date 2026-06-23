@@ -16,6 +16,7 @@ public class AttackState : IState
         _ctx.DefenceWindowOpen = true;
         _ctx.BlockHeld = false;
         _ctx.BlockRequest = false;
+        Debug.Log("AttackState Enter");
 
         if (_ctx.Attack2Request)
         {

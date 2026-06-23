@@ -23,7 +23,7 @@ public class PlayerRotation : IRotation//, ITurnHandler
     private bool _isMoving;
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
-    
+
     public bool IsMoving { get => _isMoving; set => _isMoving = value; }
     public bool WantsToMove { get => _wantsToMove; set => _wantsToMove = value; }
     public bool JustStartedMovingForward { get => _justStartedMovingForward; set => _justStartedMovingForward = value; }
@@ -66,7 +66,6 @@ public class PlayerRotation : IRotation//, ITurnHandler
 
     public void HandleRotation()
     {
-        Debug.Log(_config.MouseSensitivity);
         float mouseX = _lookInput.x * _config.MouseSensitivity;
         float mouseY = _lookInput.y * _config.MouseSensitivity;
 

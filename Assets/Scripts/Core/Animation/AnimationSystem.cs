@@ -28,7 +28,6 @@ public class AnimationSystem : IAnimationSystem
 
         _action = new ActionStateMachine(_actionCtx);
         _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
-        
         _locomotion.SetState(_locomotion.Idle);
     }
 
@@ -53,7 +52,7 @@ public class AnimationSystem : IAnimationSystem
         _action = new ActionStateMachine(_actionCtx);
         _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
         _locomotion.SetState(_locomotion.Patrol);
-
+        Debug.Log("Enemy AnimationSystem controller");
     }
 
     public void OnJumpTakeOff()

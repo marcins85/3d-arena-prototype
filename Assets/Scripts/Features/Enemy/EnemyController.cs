@@ -42,6 +42,8 @@ public class EnemyController : MonoBehaviour
                 StartCoroutine(ResetAttackCoroutine());
             }
         }
+
+        _animation.Update(new Vector2(0, 0), true, 0f, false);
     }
 
     private IEnumerator ResetAttackCoroutine()
