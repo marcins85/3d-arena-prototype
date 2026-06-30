@@ -32,13 +32,13 @@ public class IdleState : IState
         float delta = _ctx.Rotation.GetDeltaYaw();
         if (!_ctx.Rotation.IsTurning && _ctx.Rotation.JustStartedMovingForward && !_ctx.Rotation.IsMoving)
         {
-            if (delta > _ctx.Config.moveTurnTreshold)
+            if (delta > _ctx.Config.MoveTurnTreshold)
             {
                 _sm.Turn.SetDirection(true);
                 _sm.SetState(_sm.Turn);
                 return;
             }
-            else if (delta < -_ctx.Config.moveTurnTreshold)
+            else if (delta < -_ctx.Config.MoveTurnTreshold)
             {
                 _sm.Turn.SetDirection(false);
                 _sm.SetState(_sm.Turn);

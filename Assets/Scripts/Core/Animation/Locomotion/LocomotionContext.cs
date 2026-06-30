@@ -1,7 +1,7 @@
 using UnityEngine;
 public class LocomotionContext
 {
-    public PlayerConfigSO Config;
+    public IEntityConfig Config;
     public IMovement Movement;
     public IRotation Rotation;
     public IJump Jump;
@@ -10,4 +10,6 @@ public class LocomotionContext
     public float VerticalVelocity;
     public bool IsGrounded;
     public bool JumpRequest;
+    public bool WalkPointSet; //enemy
+    public bool TryAttack; //enemy
 }

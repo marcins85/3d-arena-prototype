@@ -8,7 +8,7 @@ public interface ITurnHandler
 
 public class PlayerRotation : IRotation//, ITurnHandler
 {
-    private PlayerConfigSO _config;
+    private IEntityConfig _config;
 
     private Transform _player;
     private Transform _camRoot;
@@ -23,14 +23,14 @@ public class PlayerRotation : IRotation//, ITurnHandler
     private bool _isMoving;
     private bool _wantsToMove;
     private bool _justStartedMovingForward = false;
-    
+
     public bool IsMoving { get => _isMoving; set => _isMoving = value; }
     public bool WantsToMove { get => _wantsToMove; set => _wantsToMove = value; }
     public bool JustStartedMovingForward { get => _justStartedMovingForward; set => _justStartedMovingForward = value; }
 
     public bool IsTurning { get; set; }
 
-    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, PlayerConfigSO config)
+    public PlayerRotation(Transform camRoot, Transform camPitch, Transform player, IEntityConfig config)
     {
         _camRoot = camRoot;
         _camPitch = camPitch;
@@ -45,21 +45,29 @@ public class PlayerRotation : IRotation//, ITurnHandler
 
     public void SetMoveInput(Vector2 moveInput)
     {
+        // bool prevWantsToMove = WantsToMove;
+        // WantsToMove = moveInput != Vector2.zero;//moveInput.y > 0.1f;
+        // JustStartedMovingForward = !prevWantsToMove && WantsToMove;
+
+        // if (!WantsToMove && !IsTurning)
+        //     IsMoving = false;
+
         bool prevWantsToMove = WantsToMove;
-
-        WantsToMove = moveInput != Vector2.zero;//moveInput.y > 0.1f;
-
-        JustStartedMovingForward = !prevWantsToMove && WantsToMove;
+        float deadzone = 0.1f;
+        WantsToMove = moveInput.sqrMagnitude > deadzone * deadzone;
+        JustStartedMovingForward = !prevWantsToMove && WantsToMove && moveInput.y > deadzone;
 
         if (!WantsToMove && !IsTurning)
+        {
             IsMoving = false;
-
+            JustStartedMovingForward = false;
+        }
     }
 
     public void HandleRotation()
     {
-        float mouseX = _lookInput.x * _config.mouseSensitivity;
-        float mouseY = _lookInput.y * _config.mouseSensitivity;
+        float mouseX = _lookInput.x * _config.MouseSensitivity;
+        float mouseY = _lookInput.y * _config.MouseSensitivity;
 
         RotateCameraYaw(mouseX);
         RotateCameraPitch(mouseY);
@@ -74,7 +82,7 @@ public class PlayerRotation : IRotation//, ITurnHandler
 
     private void RotateCameraPitch(float amount)
     {
-        _verticalRotation = Mathf.Clamp(_verticalRotation - amount, -_config.upDownLimit, _config.upDownLimit);
+        _verticalRotation = Mathf.Clamp(_verticalRotation - amount, -_config.UpDownLimit, _config.UpDownLimit);
         _camPitch.localRotation = Quaternion.Euler(_verticalRotation, 0f, 0f);
     }
 

@@ -1,18 +1,26 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerConfigSO", menuName = "Scriptable Objects/PlayerConfigSO")]
-public class PlayerConfigSO : ScriptableObject
+public class PlayerConfigSO : ScriptableObject, IEntityConfig
 {
     [Header("Movement")]
-    public float walkSpeed = 5f;
-    public float sprintMultiplier = 3.5f;
+    [SerializeField] private float walkSpeed = 5f;
+    [SerializeField] private float sprintMultiplier = 3.5f;
 
     [Header("Jump")]
-    public float jumpForce = 5f;
-    public float gravityMultiplier = 1f;
+    [SerializeField] private float jumpForce = 5f;
+    [SerializeField] private float gravityMultiplier = 1f;
 
     [Header("Rotation")]
-    public float mouseSensitivity = 0.1f;
-    public float upDownLimit = 80f;
-    public float moveTurnTreshold = 45f;
+    [SerializeField] private float mouseSensitivity = 0.1f;
+    [SerializeField] private float upDownLimit = 80f;
+    [SerializeField] private float moveTurnTreshold = 45f;
+
+    public float WalkSpeed => walkSpeed;
+    public float SprintMultiplier => sprintMultiplier;
+    public float JumpForce => jumpForce;
+    public float GravityMultiplier => gravityMultiplier;
+    public float MouseSensitivity => mouseSensitivity;
+    public float UpDownLimit => upDownLimit;
+    public float MoveTurnTreshold => moveTurnTreshold;
 }
