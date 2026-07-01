@@ -52,6 +52,26 @@ public class EnemyController : MonoBehaviour
         _ai.ResetAttack();
     }
 
+    public void OnAttackFinished()
+    {
+        _animation.OnAttackFinished();
+    }
+
+    public void OnAttackComboTransition()
+    {
+        _animation.ComboTransition();
+    }
+
+    public void OnAttackComboWindowOpen()
+    {
+        _animation.ComboWindowOpen();
+    }
+
+    public void OnBlockWindowClosed()
+    {
+        _animation.BlockWindowClosed();
+    }
+
     public EnemyConfigSO GetEnemyConfigSO() => _config;
     public NavMeshAgent GetNavMeshAgent() => _agent;
     public Transform GetPlayerTransform() => _player;
