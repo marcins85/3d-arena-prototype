@@ -9,7 +9,7 @@ public class AnimationSystem : IAnimationSystem
     private readonly ActionContext _actionCtx;
 
     // for player
-    public AnimationSystem(IEntityConfig config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
+    public AnimationSystem(IEntityConfig config, IMovement movement, Animator animator, IJump jump, IRotation rotation, IAttack attack)
     {
         _locomotionCtx = new LocomotionContext
         {
@@ -24,6 +24,7 @@ public class AnimationSystem : IAnimationSystem
         {
             Animator = animator,
             Movement = movement,
+            Attack = attack,
         };
 
         _action = new ActionStateMachine(_actionCtx);
@@ -32,7 +33,7 @@ public class AnimationSystem : IAnimationSystem
     }
 
     // for enemy
-    public AnimationSystem(EnemyConfigSO config, IMovement movement, Animator animator, IJump jump, IRotation rotation)
+    public AnimationSystem(EnemyConfigSO config, IMovement movement, Animator animator, IJump jump, IRotation rotation, IAttack attack)
     {
         _locomotionCtx = new LocomotionContext
         {
@@ -47,12 +48,12 @@ public class AnimationSystem : IAnimationSystem
         {
             Animator = animator,
             Movement = movement,
+            Attack = attack,
         };
 
         _action = new ActionStateMachine(_actionCtx);
         _locomotion = new LocomotionStateMachine(_locomotionCtx, _actionCtx, _action);
         _locomotion.SetState(_locomotion.Patrol);
-        Debug.Log("Enemy AnimationSystem controller");
     }
 
     public void OnJumpTakeOff()
@@ -83,6 +84,11 @@ public class AnimationSystem : IAnimationSystem
     public void SetSprint(bool sprint)
     {
         _locomotionCtx.Animator.SetBool("Sprint", sprint);
+    }
+
+    public void OnAttackHitted()
+    {
+        _action.HandleAnimationEvent("OnAttackHitted");
     }
 
     public void OnAttackFinished()

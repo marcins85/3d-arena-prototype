@@ -174,7 +174,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2715566404302941441, guid: 0587da132ba94613b9f55886ae8de652, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1491281052}
   m_SourcePrefab: {fileID: 100100000, guid: 0587da132ba94613b9f55886ae8de652, type: 3}
 --- !u!1 &131534739
 GameObject:
@@ -255,7 +258,7 @@ GameObject:
   - component: {fileID: 142909021}
   m_Layer: 0
   m_Name: CastleGuard
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -400,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrappper
   _player: {fileID: 1473415203}
   _enemy: {fileID: 142909021}
+  _enemyHitbox: {fileID: 1491281052}
 --- !u!4 &228874750
 Transform:
   m_ObjectHideFlags: 0
@@ -1342,7 +1346,7 @@ GameObject:
   - component: {fileID: 1473415204}
   m_Layer: 7
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1432,6 +1436,26 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1491281050 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2715566404302941441, guid: 0587da132ba94613b9f55886ae8de652, type: 3}
+  m_PrefabInstance: {fileID: 93015524}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1491281052
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1491281050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90de7c3914ac68d24ac60c25131093cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hitbox
+  _playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1604056157
 GameObject:
   m_ObjectHideFlags: 0

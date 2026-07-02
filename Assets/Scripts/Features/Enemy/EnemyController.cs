@@ -36,7 +36,6 @@ public class EnemyController : MonoBehaviour
 
             if (_ai.TryAttack())
             {
-                Debug.Log("Enemy attacking!");
                 _animation.RequestAttack2();
 
                 StartCoroutine(ResetAttackCoroutine());
@@ -50,6 +49,11 @@ public class EnemyController : MonoBehaviour
     {
         yield return new WaitForSeconds(_ai.GetTimeBetweenAttacks());
         _ai.ResetAttack();
+    }
+
+    public void OnAttackHitted()
+    {
+        _animation.OnAttackHitted();
     }
 
     public void OnAttackFinished()
