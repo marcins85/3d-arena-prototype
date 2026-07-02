@@ -212,6 +212,11 @@ public class PlayerController : MonoBehaviour
         _animation.BlockWindowClosed();
     }
 
+    public void OnAttackHitted()
+    {
+        _animation.OnAttackHitted();
+    }
+
     public void OnAttackFinished()
     {
         _movement.State = MovementState.Normal;

@@ -5,6 +5,7 @@ public class ActionContext
     public Animator Animator;
     public IMovement Movement;
     public IDamage Damage;
+    public IAttack Attack;
     public bool Attack1Request;
     public bool Attack2Request;
     public bool HitRequest;

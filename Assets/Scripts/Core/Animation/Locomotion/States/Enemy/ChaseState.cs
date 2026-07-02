@@ -17,7 +17,6 @@ public class ChaseState : IState
 
     public void Enter()
     {
-        Debug.Log("ChaseState Enter");
         _sm.SetState(_sm.Move);
     }
 
@@ -33,7 +32,6 @@ public class ChaseState : IState
     {
         if (!_ctx.WalkPointSet && _ctx.TryAttack)
         {
-            Debug.Log("ChaseState Update set attack");
             _asm.SetState(_asm.Attack);
         }
     }

@@ -5,6 +5,7 @@ public class GameBootstrappper : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
     [SerializeField] private EnemyController _enemy;
+    [SerializeField] private Hitbox _enemyHitbox;
 
     public void Awake()
     {
@@ -29,13 +30,15 @@ public class GameBootstrappper : MonoBehaviour
         IMovement playerMovement = new PlayerMovement(cc, _player.transform, camRoot, mask, playerConfig);
         IRotation playerRotation = new PlayerRotation(camRoot, camPitch, _player.transform, playerConfig);
         IJump playerJump = new PlayerJump(playerConfig);
+        IAttack playerAttack = null;
 
         IMovement enemyMovement = new EnemyMovement(enemyAgent, enemyConfig);
         IRotation enemyRotation = new NoOpRotation();
         IJump enemyJump = null;
+        IAttack enemyAttack = new EnemyAttack(_enemyHitbox);
 
-        IAnimationSystem playerAnimation = new AnimationSystem(playerConfig, playerMovement, animator, playerJump, playerRotation);
-        IAnimationSystem enemyAnimation = new AnimationSystem(enemyConfig, enemyMovement, enemyAnimator, enemyJump, enemyRotation);
+        IAnimationSystem playerAnimation = new AnimationSystem(playerConfig, playerMovement, animator, playerJump, playerRotation, playerAttack);
+        IAnimationSystem enemyAnimation = new AnimationSystem(enemyConfig, enemyMovement, enemyAnimator, enemyJump, enemyRotation, enemyAttack);
         ITurnHandler turnHandler = playerRotation as ITurnHandler;
 
         EnemyAI enemyAI = new EnemyAI(enemyAgent, enemyPlayerTransform, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);

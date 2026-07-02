@@ -18,6 +18,7 @@ public interface IAnimationSystem
     public void OnTurnRightFinished();
     public void ComboWindowOpen();
     public void ComboTransition();
+    public void OnAttackHitted();
     public void OnAttackFinished();
     public void OnAnimationFinished();
     public void BlockWindowClosed();
