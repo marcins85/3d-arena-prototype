@@ -21,4 +21,5 @@ public interface IAnimationSystem
     public void OnAttackFinished();
     public void OnAnimationFinished();
     public void BlockWindowClosed();
+    public void SetAnimationSpeed(float value);
 }

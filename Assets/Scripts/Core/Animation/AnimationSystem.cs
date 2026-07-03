@@ -147,6 +147,11 @@ public class AnimationSystem : IAnimationSystem
         _locomotionCtx.TryAttack = value;
     }
 
+    public void SetAnimationSpeed(float value)
+    {
+        _locomotionCtx.Animator.speed = value;
+    }
+
     public void Update(Vector2 velocity, bool isGrounded, float verticalVelocity, bool jumpRequest)
     {
         if (_actionCtx.HitRequest)
