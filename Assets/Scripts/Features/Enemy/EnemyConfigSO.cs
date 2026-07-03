@@ -4,8 +4,8 @@ using UnityEngine;
 public class EnemyConfigSO : ScriptableObject, IEntityConfig
 {
     [Header("Movement")]
-    [SerializeField] private float walkSpeed = 1.5f;
-    [SerializeField] private float sprintMultiplier = 2.0f;
+    [SerializeField] private float walkSpeed = 2f;
+    [SerializeField] private float sprintMultiplier = 2f;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 3f;

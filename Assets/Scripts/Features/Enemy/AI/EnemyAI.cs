@@ -96,6 +96,7 @@ public class EnemyAI
     public void Chasing()
     {
         _agent.SetDestination(_player.position);
+        _agent.speed = 3f;
     }
 
     public void Attacking()

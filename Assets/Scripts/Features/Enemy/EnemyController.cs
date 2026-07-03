@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour
 
     private IAnimationSystem _animation;
     private EnemyAI _ai;
+    private Vector2 _velocity = new Vector2(0, 0);
 
     public void Inject(EnemyAI ai, IAnimationSystem animation)
     {
@@ -27,11 +28,22 @@ public class EnemyController : MonoBehaviour
     {
         _ai.SetPlayerInSightRange(Physics.CheckSphere(transform.position, _ai.GetSightRange(), _ai.GetWhatIsPlayer()));
         _ai.SetPlayerInAttackRange(Physics.CheckSphere(transform.position, _ai.GetAttackRange(), _ai.GetWhatIsPlayer()));
+        SetAnimationSpeed(_config.WalkSpeed / _config.WalkSpeed);
 
-        if (!_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Patroling();
-        if (_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange()) _ai.Chasing();
+        if (!_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange())
+        {
+            _ai.Patroling();
+            _velocity = new Vector2(transform.position.x, transform.position.z);
+        }
+        if (_ai.GetPlayerInSightRange() && !_ai.GetPlayerInAttackRange())
+        {
+            _ai.Chasing();
+            _velocity = new Vector2(transform.position.x, transform.position.z);
+            SetAnimationSpeed(_config.SprintMultiplier);
+        }
         if (_ai.GetPlayerInSightRange() && _ai.GetPlayerInAttackRange())
         {
+            _velocity = Vector2.zero;
             _ai.Attacking();
 
             if (_ai.TryAttack())
@@ -42,7 +54,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 
-        _animation.Update(new Vector2(0, 0), true, 0f, false);
+        _animation.Update(_velocity, true, 0f, false);
     }
 
     private IEnumerator ResetAttackCoroutine()
@@ -74,6 +86,11 @@ public class EnemyController : MonoBehaviour
     public void OnBlockWindowClosed()
     {
         _animation.BlockWindowClosed();
+    }
+
+    public void SetAnimationSpeed(float value)
+    {
+        _animation.SetAnimationSpeed(value);
     }
 
     public EnemyConfigSO GetEnemyConfigSO() => _config;
