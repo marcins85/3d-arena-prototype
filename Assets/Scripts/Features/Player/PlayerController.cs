@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHealth
 {
     [SerializeField] private PlayerConfigSO _config;
     [SerializeField] private CharacterController _characterController;
@@ -24,8 +24,9 @@ public class PlayerController : MonoBehaviour
 
     private bool _jumpRequest = false;
     private Vector2 _moveInput;
+    private IHealth _healthSystem;
 
-    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IInputBuffer inputBuffer, IAnimationSystem animation)
+    public void Inject(IMovement movement, IRotation rotation, IJump jump, ITurnHandler turnHandler, IPlayerInput input, IInputBuffer inputBuffer, IAnimationSystem animation, IHealth healthSystem)
     {
         _movement = movement;
         _rotation = rotation;
@@ -33,6 +34,7 @@ public class PlayerController : MonoBehaviour
         _input = input;
         _inputBuffer = inputBuffer;
         _animation = animation;
+        _healthSystem = healthSystem;
     }
 
     void Awake()
@@ -44,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (Dead()) Debug.Log("You are DEAD!");
         bool grounded = _movement.IsGroundedRaycast();
         _jump.HandleJump(grounded);
         float y = _jump.GetVerticalVelocity();
@@ -244,6 +247,15 @@ public class PlayerController : MonoBehaviour
         {
             _animation.RequestHit();
         }
+    }
+
+    public void TakeDamage(IDamage damage)
+    {
+        _healthSystem.TakeDamage(damage);
+    }
+    public bool Dead()
+    {
+        return _healthSystem.Dead();
     }
 
     public PlayerConfigSO GetPlayerConfigSO() => _config;

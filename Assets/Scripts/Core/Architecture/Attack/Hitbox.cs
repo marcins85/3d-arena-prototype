@@ -9,7 +9,11 @@ public class Hitbox : MonoBehaviour, IHitbox
     {
         foreach (var hit in hits)
         {
-            Debug.Log(hit.tag + ": " + damage.GetDamage());
+            var health = hit.GetComponent<IHealth>();
+            if (health != null)
+            {
+                health.TakeDamage(damage);
+            }
         }
     }
 

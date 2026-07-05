@@ -31,6 +31,7 @@ public class GameBootstrappper : MonoBehaviour
         IRotation playerRotation = new PlayerRotation(camRoot, camPitch, _player.transform, playerConfig);
         IJump playerJump = new PlayerJump(playerConfig);
         IAttack playerAttack = null;
+        IHealth playerHealth = new Health(playerConfig.Health);
 
         IMovement enemyMovement = new EnemyMovement(enemyAgent, enemyConfig);
         IRotation enemyRotation = new NoOpRotation();
@@ -43,7 +44,7 @@ public class GameBootstrappper : MonoBehaviour
 
         EnemyAI enemyAI = new EnemyAI(enemyAgent, enemyPlayerTransform, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);
 
-        _player.Inject(playerMovement, playerRotation, playerJump, turnHandler, input, inputBuffer, playerAnimation);
+        _player.Inject(playerMovement, playerRotation, playerJump, turnHandler, input, inputBuffer, playerAnimation, playerHealth);
         _enemy.Inject(enemyAI, enemyAnimation);
     }
 }

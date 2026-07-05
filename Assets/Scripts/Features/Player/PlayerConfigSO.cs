@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "PlayerConfigSO", menuName = "Scriptable Objects/PlayerConfigSO")]
@@ -16,6 +17,9 @@ public class PlayerConfigSO : ScriptableObject, IEntityConfig
     [SerializeField] private float upDownLimit = 80f;
     [SerializeField] private float moveTurnTreshold = 45f;
 
+    [Header("Health")]
+    [SerializeField] private int health = 100;
+
     public float WalkSpeed => walkSpeed;
     public float SprintMultiplier => sprintMultiplier;
     public float JumpForce => jumpForce;
@@ -23,4 +27,5 @@ public class PlayerConfigSO : ScriptableObject, IEntityConfig
     public float MouseSensitivity => mouseSensitivity;
     public float UpDownLimit => upDownLimit;
     public float MoveTurnTreshold => moveTurnTreshold;
+    public int Health => health;
 }
