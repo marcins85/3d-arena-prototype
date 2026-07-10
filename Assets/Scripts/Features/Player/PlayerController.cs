@@ -46,7 +46,6 @@ public class PlayerController : MonoBehaviour, IHealth
 
     private void Update()
     {
-        if (Dead()) Debug.Log("You are DEAD!");
         bool grounded = _movement.IsGroundedRaycast();
         _jump.HandleJump(grounded);
         float y = _jump.GetVerticalVelocity();

@@ -4,7 +4,7 @@ public class Hitbox : MonoBehaviour, IHitbox
 {
     private Collider[] hits;
 
-    [SerializeField] private LayerMask _playerLayer;
+    [SerializeField] private LayerMask _opponentLayer;
     public void Activate(IDamage damage)
     {
         foreach (var hit in hits)
@@ -19,6 +19,6 @@ public class Hitbox : MonoBehaviour, IHitbox
 
     private void Update()
     {
-        hits = Physics.OverlapSphere(transform.position, 2f, _playerLayer);
+        hits = Physics.OverlapSphere(transform.position, 2f, _opponentLayer);
     }
 }
