@@ -5,8 +5,8 @@ public class GameBootstrappper : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
     [SerializeField] private EnemyController _enemy;
-    [SerializeField] private Hitbox _enemyHitbox;
-    [SerializeField] private Hitbox _playerHitbox;
+    [SerializeField] private Hitbox _enemyRightHandHitbox;
+    [SerializeField] private Hitbox _playerSwordHitbox;
 
     public void Awake()
     {
@@ -31,13 +31,13 @@ public class GameBootstrappper : MonoBehaviour
         IMovement playerMovement = new PlayerMovement(cc, _player.transform, camRoot, mask, playerConfig);
         IRotation playerRotation = new PlayerRotation(camRoot, camPitch, _player.transform, playerConfig);
         IJump playerJump = new PlayerJump(playerConfig);
-        IAttack playerAttack = new PlayerAttack(_playerHitbox);
+        IAttack playerAttack = new PlayerAttack(_playerSwordHitbox);
         IHealth playerHealth = new Health(playerConfig.Health);
 
         IMovement enemyMovement = new EnemyMovement(enemyAgent, enemyConfig);
         IRotation enemyRotation = new NoOpRotation();
         IJump enemyJump = null;
-        IAttack enemyAttack = new EnemyAttack(_enemyHitbox);
+        IAttack enemyAttack = new EnemyAttack(_enemyRightHandHitbox);
         IHealth enemyHealth = new Health(enemyConfig.Health);
 
         IAnimationSystem playerAnimation = new AnimationSystem(playerConfig, playerMovement, animator, playerJump, playerRotation, playerAttack);
