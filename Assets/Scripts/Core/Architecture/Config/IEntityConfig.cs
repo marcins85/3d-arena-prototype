@@ -7,4 +7,5 @@ public interface IEntityConfig
     float MouseSensitivity { get; }
     float UpDownLimit { get; }
     float MoveTurnTreshold { get; }
+    int Health { get; }
 }

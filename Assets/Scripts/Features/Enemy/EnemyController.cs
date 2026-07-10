@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 
-public class EnemyController : MonoBehaviour
+public class EnemyController : MonoBehaviour, IHealth
 {
     [SerializeField] private EnemyConfigSO _config;
     [SerializeField] private CharacterController _characterController;
@@ -17,11 +17,13 @@ public class EnemyController : MonoBehaviour
     private IAnimationSystem _animation;
     private EnemyAI _ai;
     private Vector2 _velocity = new Vector2(0, 0);
+    private IHealth _healthSystem;
 
-    public void Inject(EnemyAI ai, IAnimationSystem animation)
+    public void Inject(EnemyAI ai, IAnimationSystem animation, IHealth healthSystem)
     {
         _ai = ai;
         _animation = animation;
+        _healthSystem = healthSystem;
     }
 
     private void Update()
@@ -91,6 +93,16 @@ public class EnemyController : MonoBehaviour
     public void SetAnimationSpeed(float value)
     {
         _animation.SetAnimationSpeed(value);
+    }
+
+    public void TakeDamage(IDamage damage)
+    {
+        _healthSystem.TakeDamage(damage);
+    }
+
+    public bool Dead()
+    {
+        return _healthSystem.Dead();
     }
 
     public EnemyConfigSO GetEnemyConfigSO() => _config;

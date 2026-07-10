@@ -16,6 +16,9 @@ public class EnemyConfigSO : ScriptableObject, IEntityConfig
     [SerializeField] private float upDownLimit = 20f;
     [SerializeField] private float moveTurnTreshold = 45f;
 
+    [Header("Health")]
+    [SerializeField] private int health = 100;
+
     public float WalkSpeed => walkSpeed;
     public float SprintMultiplier => sprintMultiplier;
     public float JumpForce => jumpForce;
@@ -23,4 +26,5 @@ public class EnemyConfigSO : ScriptableObject, IEntityConfig
     public float MouseSensitivity => mouseSensitivity;
     public float UpDownLimit => upDownLimit;
     public float MoveTurnTreshold => moveTurnTreshold;
+    public int Health => health;
 }
