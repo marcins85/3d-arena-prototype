@@ -583,8 +583,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameBootstrappper
   _player: {fileID: 1473415203}
   _enemy: {fileID: 142909021}
-  _enemyHitbox: {fileID: 1491281052}
-  _playerHitbox: {fileID: 939480376}
+  _enemyRightHandHitbox: {fileID: 1491281052}
+  _playerSwordHitbox: {fileID: 939480376}
 --- !u!4 &228874750
 Transform:
   m_ObjectHideFlags: 0
@@ -1230,7 +1230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90de7c3914ac68d24ac60c25131093cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  _opponentLayer:
+  _oponentLayer:
     serializedVersion: 2
     m_Bits: 256
 --- !u!1 &1046379137
@@ -1657,7 +1657,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90de7c3914ac68d24ac60c25131093cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Hitbox
-  _opponentLayer:
+  _oponentLayer:
     serializedVersion: 2
     m_Bits: 128
 --- !u!1 &1604056157
