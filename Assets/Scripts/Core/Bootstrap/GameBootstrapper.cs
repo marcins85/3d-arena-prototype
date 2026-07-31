@@ -5,7 +5,8 @@ public class GameBootstrappper : MonoBehaviour
 {
     [SerializeField] private PlayerController _player;
     [SerializeField] private EnemyController _enemy;
-    [SerializeField] private Hitbox _enemyHitbox;
+    [SerializeField] private Hitbox _enemyRightHandHitbox;
+    [SerializeField] private Hitbox _playerSwordHitbox;
 
     public void Awake()
     {
@@ -30,12 +31,14 @@ public class GameBootstrappper : MonoBehaviour
         IMovement playerMovement = new PlayerMovement(cc, _player.transform, camRoot, mask, playerConfig);
         IRotation playerRotation = new PlayerRotation(camRoot, camPitch, _player.transform, playerConfig);
         IJump playerJump = new PlayerJump(playerConfig);
-        IAttack playerAttack = null;
+        IAttack playerAttack = new PlayerAttack(_playerSwordHitbox);
+        IHealth playerHealth = new Health(playerConfig.Health);
 
         IMovement enemyMovement = new EnemyMovement(enemyAgent, enemyConfig);
         IRotation enemyRotation = new NoOpRotation();
         IJump enemyJump = null;
-        IAttack enemyAttack = new EnemyAttack(_enemyHitbox);
+        IAttack enemyAttack = new EnemyAttack(_enemyRightHandHitbox);
+        IHealth enemyHealth = new Health(enemyConfig.Health);
 
         IAnimationSystem playerAnimation = new AnimationSystem(playerConfig, playerMovement, animator, playerJump, playerRotation, playerAttack);
         IAnimationSystem enemyAnimation = new AnimationSystem(enemyConfig, enemyMovement, enemyAnimator, enemyJump, enemyRotation, enemyAttack);
@@ -43,7 +46,7 @@ public class GameBootstrappper : MonoBehaviour
 
         EnemyAI enemyAI = new EnemyAI(enemyAgent, enemyPlayerTransform, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);
 
-        _player.Inject(playerMovement, playerRotation, playerJump, turnHandler, input, inputBuffer, playerAnimation);
-        _enemy.Inject(enemyAI, enemyAnimation);
+        _player.Inject(playerMovement, playerRotation, playerJump, turnHandler, input, inputBuffer, playerAnimation, playerHealth);
+        _enemy.Inject(enemyAI, enemyAnimation, enemyHealth);
     }
 }
