@@ -4,7 +4,8 @@ using UnityEngine.AI;
 public class EnemyAI
 {
     private NavMeshAgent _agent;
-    private Transform _player;
+    private PlayerController _player;
+    private Transform _playerTransform;
     private Transform _transform;
     private LayerMask _whatIsGround;
     private LayerMask _whatIsPlayer;
@@ -22,13 +23,14 @@ public class EnemyAI
     private float _sightRange = 20f, _attackRange = 1f;
     private bool _playerInSightRange, _playerInAttackRange;
 
-    public EnemyAI(NavMeshAgent agent, Transform player, Transform transform, LayerMask whatIsGround, LayerMask whatIsPlayer)
+    public EnemyAI(NavMeshAgent agent, PlayerController player, Transform transform, LayerMask whatIsGround, LayerMask whatIsPlayer)
     {
         _agent = agent;
         _player = player;
         _transform = transform;
         _whatIsGround = whatIsGround;
         _whatIsPlayer = whatIsPlayer;
+        _playerTransform = player.transform;
     }
 
     public float GetTimeBetweenAttacks()
@@ -95,7 +97,7 @@ public class EnemyAI
 
     public void Chasing()
     {
-        _agent.SetDestination(_player.position);
+        _agent.SetDestination(_playerTransform.position);
         _agent.speed = 3f;
     }
 
@@ -103,7 +105,7 @@ public class EnemyAI
     {
         // set enemy to stop walking
         _agent.SetDestination(_transform.position);
-        _transform.LookAt(_player);
+        _transform.LookAt(_playerTransform);
         _transform.eulerAngles = new Vector3(0, _transform.eulerAngles.y, 0);
     }
 

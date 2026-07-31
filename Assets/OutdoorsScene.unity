@@ -522,8 +522,8 @@ MonoBehaviour:
   _config: {fileID: 11400000, guid: a0f81423dfc97f04eb24ad761b0c8ac8, type: 2}
   _characterController: {fileID: 142909019}
   _animator: {fileID: 142909020}
+  _player: {fileID: 1473415203}
   _agent: {fileID: 142909022}
-  _player: {fileID: 1473415202}
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 64

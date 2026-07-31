@@ -9,11 +9,12 @@ public class EnemyController : MonoBehaviour, IHealth
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Animator _animator;
 
+    [SerializeField] private PlayerController _player;
     [SerializeField] private NavMeshAgent _agent;
-    [SerializeField] private Transform _player;
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private LayerMask _whatIsPlayer;
 
+    private Transform _playerTransform;
     private IAnimationSystem _animation;
     private EnemyAI _ai;
     private Vector2 _velocity = new Vector2(0, 0);
@@ -26,8 +27,23 @@ public class EnemyController : MonoBehaviour, IHealth
         _healthSystem = healthSystem;
     }
 
+    private void Awake()
+    {
+        _playerTransform = _player.transform;
+    }
+
     private void Update()
     {
+        if (Dead()) { return; }
+        if (_player.Dead())
+        {
+            _ai.Patroling();
+            _velocity = new Vector2(transform.position.x, transform.position.z);
+            _animation.OnAttackFinished();
+            _animation.Update(_velocity, true, 0f, false);
+            return;
+        }
+
         _ai.SetPlayerInSightRange(Physics.CheckSphere(transform.position, _ai.GetSightRange(), _ai.GetWhatIsPlayer()));
         _ai.SetPlayerInAttackRange(Physics.CheckSphere(transform.position, _ai.GetAttackRange(), _ai.GetWhatIsPlayer()));
         SetAnimationSpeed(_config.WalkSpeed / _config.WalkSpeed);
@@ -107,7 +123,7 @@ public class EnemyController : MonoBehaviour, IHealth
 
     public EnemyConfigSO GetEnemyConfigSO() => _config;
     public NavMeshAgent GetNavMeshAgent() => _agent;
-    public Transform GetPlayerTransform() => _player;
+    public Transform GetPlayerTransform() => _playerTransform;
     public LayerMask GetLayerMaskGround() => _whatIsGround;
     public LayerMask GetLayerMaskPlayer() => _whatIsPlayer;
     public Animator GetAnimator() => _animator;

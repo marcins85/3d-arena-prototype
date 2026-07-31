@@ -20,7 +20,7 @@ public class GameBootstrappper : MonoBehaviour
 
         var enemyConfig = _enemy.GetEnemyConfigSO();
         var enemyAgent = _enemy.GetNavMeshAgent();
-        var enemyPlayerTransform = _enemy.GetPlayerTransform();
+        //var enemyPlayerTransform = _enemy.GetPlayerTransform();
         var enemyLayerMaskGround = _enemy.GetLayerMaskGround();
         var enemyLayerMaskPlayer = _enemy.GetLayerMaskPlayer();
         var enemyAnimator = _enemy.GetAnimator();
@@ -44,7 +44,7 @@ public class GameBootstrappper : MonoBehaviour
         IAnimationSystem enemyAnimation = new AnimationSystem(enemyConfig, enemyMovement, enemyAnimator, enemyJump, enemyRotation, enemyAttack);
         ITurnHandler turnHandler = playerRotation as ITurnHandler;
 
-        EnemyAI enemyAI = new EnemyAI(enemyAgent, enemyPlayerTransform, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);
+        EnemyAI enemyAI = new EnemyAI(enemyAgent, _player, _enemy.transform, enemyLayerMaskGround, enemyLayerMaskPlayer);
 
         _player.Inject(playerMovement, playerRotation, playerJump, turnHandler, input, inputBuffer, playerAnimation, playerHealth);
         _enemy.Inject(enemyAI, enemyAnimation, enemyHealth);
